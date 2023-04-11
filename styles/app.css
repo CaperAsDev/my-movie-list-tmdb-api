@@ -1,0 +1,548 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+:root {
+  --background-color: rgb(45, 16, 45);
+  --background-gradient: linear-gradient(
+    224.3deg,
+    #161128 19.12%,
+    rgba(39, 33, 63, 0.94) 75.31%
+  );
+  --background-shadow: linear-gradient(
+    180deg,
+    #33353a 0%,
+    rgba(53, 59, 74, 0) 100%
+  );
+  --main-text-color: #daecf6;
+	--dark-font-color: rgb(53, 10, 34);
+	--contrast-color: #f5ac52;
+	--subtitle-color: #6FB6CC;
+  --main-font: "Josefin Sans", sans-serif;
+  --second-font: "Poppins", sans-serif;
+	--translucid-background-dark: rgba(67, 47, 67, .5);
+	--translucid-background-light: rgba(175, 165, 182, 0.27);
+	--translucid-background-light-high: rgba(175, 165, 182, 0.8);
+}
+html {
+  background-color: var(--background-color);
+}
+body {
+  height: 100vh;
+  background: var(--background-gradient);
+	font-family: var(--second-font);
+}
+.header {
+  position: absolute;
+  width: 100%;
+  height: 70px;
+	z-index: 20;
+}
+.header__title {
+	position: absolute;
+	top: 10px;
+	left: 50px;
+	z-index: 2;
+  font-family: var(--main-font);
+  font-weight: lighter;
+  color: var(--main-text-color);
+	letter-spacing: -0.1em;
+	cursor: pointer;
+}
+.title-bold{
+	font-weight: bold;
+	color: var(--contrast-color);
+	letter-spacing: 0;
+}
+.header__shadow {
+	position: absolute;
+	z-index: 0;
+	top: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--background-shadow) ;
+}
+.search{
+	top: 10px;
+	right: 20px;
+	height: 35px;
+	width: 300px;
+	position: absolute;
+	z-index: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 30px;
+	background: rgba(217, 217, 217, 0.45);;
+	opacity: .2;
+	transition: opacity .5s;
+}
+.header:hover .search{
+	opacity: 1;
+}
+.search__input{
+	width: 250px;
+	background-color: transparent;
+	border: none;
+	outline: none;
+	font-weight: normal;
+	font-size: 20px;
+}
+.search__icon{
+	width: 25px;
+	height: 25px;
+	margin-left: 5px;
+	cursor: pointer;
+	background-image: url(https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+}
+.aside {
+	position: absolute;
+	top: 50px;
+	display: flex;
+	height: max-content;
+	width: 215px;
+	transform: translateX(-197px);
+	transition: transform .5s;
+	z-index: 10;
+	opacity: .6;
+}
+.aside:hover{
+	transform: translateX(0px);
+	opacity: 1;
+}
+.navbar{
+	background-color: var(--translucid-background-dark) ;
+	padding: 0 15px;
+}
+.navbar__section{
+	margin-top: 10px;
+}
+.user{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-bottom: 4px;
+	border-bottom: 1px var(--contrast-color) solid;
+}
+.user__icon{
+	border-radius: 50%;
+	height: 30px;
+	width: 30px;
+	background-image: url(https://pbs.twimg.com/media/EswgAuYXEAItNST.jpg);
+	background-position: -2px 2px;
+	background-repeat: no-repeat;
+	background-size: 115%;
+	border: 1px var(--contrast-color) solid;
+}
+.user__name{
+	margin-left: 10px;
+	cursor: pointer;
+	color: var(--contrast-color);
+	font-weight: normal;
+}
+.list{
+	text-decoration: none;
+	list-style: none;
+}
+.navbar__subtitle{
+	color: var(--subtitle-color);
+	font-weight: normal;
+}
+.list__item{
+	cursor: pointer;
+	margin-left: 15px;
+	color: var(--main-text-color);
+	font-weight: lighter;
+}
+.list__item:hover{
+	transform: scale(1.1);
+}
+.aside-tab{
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 15px;
+	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+	background-color: var(--contrast-color);
+}
+.tab__icon{
+	width: 13px;
+	height: 13px;
+	background-image: url(https://cdn-icons-png.flaticon.com/512/17/17654.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.tab__icon--vertical{
+	transform: rotate(90deg);
+}
+.spotlight{
+	position: relative;
+	display: flex;
+	height: fit-content;
+	max-height: 70%;
+	z-index: 0;
+	overflow: hidden;
+}
+.spotloght__img {
+	width: 100%;
+	height: max-content;
+}
+.spotlight__panel-container{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	width: 500px;
+	height: 70px;
+	position: absolute;
+	bottom: 0px;
+	left: 50%;
+	background-color: var(--translucid-background-dark);
+	overflow: hidden;
+	border-top-right-radius: 150px 80px;
+	border-top-left-radius: 150px 80px;
+	transform: translateX(-50%) translateY(55px);
+	transition: transform .5s;
+	opacity: .6;
+}
+.spotlight__panel{
+	width: 100%;
+	display: flex;
+	justify-content: space-evenly;
+}
+.spotlight__panel-container:hover{
+	transform: translateY(0px) translateX(-50%);
+	opacity: 1;
+}
+.panel__tag{
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 15px;
+	background-color: var(--contrast-color);
+}
+.spotlight__button{
+	cursor: pointer;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	padding: 5px 14px;
+	border-radius: 30px;
+	background: var(--translucid-background-light) ;
+	border: none;
+	color: var(--main-text-color);
+	margin: 5px;
+	font-size: 25px;
+}
+.spotlight__button:hover{
+	color: var(--contrast-color);
+}
+.button__icon{
+	display: inline-flex;
+	height: 27px;
+	width: 27px;
+	margin-right: 5px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.button__icon--play{
+	background-image: url(https://cdn-icons-png.flaticon.com/512/0/375.png);
+}
+.button__icon--info{
+	background-image: url(https://www.freeiconspng.com/uploads/info-icon-32.png);
+}
+.catalog{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: max-content;
+}
+.catalog__item{
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-template-rows: auto 1fr;
+	width: min-content;
+	justify-content: center;
+	align-items: center;
+	margin: 10px 0;
+}
+.item-header{
+	grid-column: 1 / 2;
+	grid-row: 1 / 2;
+	display: grid;
+	width: auto;
+	grid-template-columns: repeat(5, 1fr);
+	justify-content: center;
+	align-items: center;
+	margin: 10px 0px;
+}
+.item-header__line{
+	grid-column: 1 / 5;
+	height: 3px;
+	background-color: var(--contrast-color);
+}
+.item-header__right{
+	display: grid;
+	grid-template-columns: auto auto;
+}
+.item-header__title{
+	cursor: pointer;
+	grid-column: 1 / 2;
+	margin-left: 10px;
+	color: var(--main-text-color);
+	font-weight: normal;
+}
+.item-header__title:hover{
+	color: var(--contrast-color);
+	transform: scale(1.1);
+}
+.item-header__progress{
+	grid-column: 2 / 3;
+	display: grid;
+	min-width: 80px;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 4px;
+	justify-self: end;
+	justify-content: center;
+	align-items: center;
+}
+.progress__icon{
+	display: inline-block;
+	background-color: var(--main-text-color);
+	height: 2px;
+}
+.progress__icon--big{
+	transform: scaleY(2);
+}
+.carousel {
+	grid-column: 1/ 2;
+	grid-row: 2 / 3;
+	width: fit-content;
+  display: flex;
+	justify-content: center;
+  gap: 10px;
+}
+.carousel__item{
+	height: fit-content;
+	cursor: pointer;
+}
+.carousel__item:hover{
+	transform: translateY(-10%) scale(1.05);
+}
+.movie__img {
+  width: 200px;
+	margin-bottom: -6px;
+}
+.carousel__next-icon{
+	cursor: pointer;
+	grid-column: 2 / 3;
+	grid-row: 2 / 3;
+	width: 30px;
+	height: 100%;
+	background-image: url(https://parspng.com/wp-content/uploads/2021/11/arrowpng.parspng.com-13.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	transform: rotate(-90deg);
+}
+/* !Modal Detalle Pelicula ⬇️ */
+.movie-detail-modal{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 30;
+}
+.modal__background{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background:var(--translucid-background-dark);
+}
+.modal__panel-container{
+	position: relative;
+	z-index: 10;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr auto;
+	width: fit-content;
+	height: max-content;
+	max-width: 90%;
+	max-height: 90%;
+	border-radius: 10px;
+	overflow: hidden;
+	overflow-y: scroll;
+	scrollbar-color: var(--contrast-color) transparent;
+	scrollbar-width: thin;
+	background: var(--translucid-background-light-high);
+}
+.modal__header{
+	display: flex;
+	align-items: end;
+	grid-row: 1 / 2;
+	grid-column: 2 / 3;
+	background-image: url(https://4.bp.blogspot.com/-1YI8bxp5Qwc/XH2DlEpED_I/AAAAAAAADOY/0zWUK0RYWHE5s-vHbsOyjSBg-YmO6v0MACKgBGAs/w2560-h1600-c/alita-battle-angel-movie-characters-uhdpaper.com-4K-15.jpg);
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 100%;
+}
+.modal__title{
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--dark-font-color);
+	font-size: 30px;
+	font-weight: lighter;
+	padding: 0 10px;
+	background: var(--translucid-background-light-high);
+	border-top-right-radius: 15px;
+}
+.modal__info{
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	grid-row: 1 / 2;
+	grid-column: 1 / 2;
+}
+.info__main{
+	font-weight: lighter;
+	text-align: justify;
+	padding: 20px;
+	border-bottom: 2px solid var(--contrast-color);
+}
+.info__details{
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	position: relative;
+}
+.details__add-to-list{
+	cursor: pointer;
+	border-radius: 15px;
+	border-style: none;
+	padding: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	color: var(--dark-font-color);
+	background: var(--contrast-color);
+	box-shadow: 2px 2px 2px var(--translucid-background-dark);
+}
+.details__add-to-list:hover{
+	transform: scale(1.1);
+}
+.detail__tags{
+	cursor: pointer;
+}
+.tag__item:hover{
+	color: var(--contrast-color);
+}
+.detail__actors{
+	transform: translateX(-97.5%);
+	transition: trasnform, 1s;
+	position: absolute;
+	background: var(--translucid-background-dark);
+	display: flex;
+	justify-content: space-between;
+	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+	left: 0px;
+}
+.detail__actors:hover{
+	transform: translateX(0);
+}
+.actor-container{
+	height: 100%;
+	width: 95%;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	overflow-x: scroll;
+	scrollbar-color: var(--contrast-color) transparent;
+}
+.actor{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	height: 100%;
+	max-width: 25%;
+	min-width: 120px;
+	background: var(--translucid-background-light-high);
+	border-radius: 5px;
+	overflow: hidden;
+}
+.actor__img{
+	height: 70%;
+	width: 100%;
+	background-image: url(https://www.themoviedb.org/t/p/w300_and_h450_bestv2/pc2tCeB99HtmrghAoPKksZkbzUU.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.actor__text--bold{
+	color: var(--dark-font-color);
+	font-weight: bold;
+	cursor: pointer;
+}
+.modal__recomended{
+	display: flex;
+	flex-direction: column;
+	padding: 15px;
+	grid-column: 1 / 3;
+	grid-row: 2 / 3;
+}
+.recomended__title{
+	font-size: 24px;
+	font-weight: normal;
+	color: var(--dark-font-color);
+}.modal__line{
+	margin:10px;
+}
+.carousel--modal{
+	align-self: center;
+	flex-wrap: wrap;
+}
+.modal__close-icon{
+	cursor: pointer;
+	display:inline-flex;
+	justify-content: center;
+	align-items: center;
+	width: 40px;
+	height: 40px;
+	font-size: 25px;
+	font-weight: bold;
+	text-align: center;
+	position: fixed;
+	right: 1%;
+	top: 2%;
+	padding: 10px;
+	border-radius: 50%;
+	background: var(--translucid-background-light-high);
+	color: var(--dark-font-color);
+}
+.inactive{
+	display: none;
+}

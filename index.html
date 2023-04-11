@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,500;1,300;1,700&family=Poppins:wght@300;400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./styles/app.css" />
+    <title>My Movie List</title>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="header__title">My Movie <b class="title-bold">List</b></h1>
+      <div class="search">
+        <input class="search__input" type="text" />
+        <span class="search__icon"></span>
+      </div>
+      <div class="header__shadow"></div>
+    </header>
+    <aside class="aside">
+      <div class="navbar">
+        <div class="profile navbar__section">
+          <div class="user">
+            <div class="user__icon"></div>
+            <h2 class="user__name">Capipop</h2>
+          </div>
+          <ul class="list list--profile">
+            <li class="list__item">Favorites</li>
+            <li class="list__item">Watch List</li>
+            <li class="list__item">History</li>
+            <li class="list__item">Liked Movies</li>
+          </ul>
+        </div>
+        <div class="navbar__section filters">
+          <h3 class="filters__title navbar__subtitle">Status</h3>
+          <ul class="list list--filters">
+            <li class="list__item">Latest</li>
+            <li class="list__item">Trending</li>
+            <li class="list__item">For you</li>
+            <li class="list__item">Continue Watching</li>
+            <li class="list__item">Watch again</li>
+          </ul>
+        </div>
+        <div class="navbar__section categories">
+          <h3 class="categories__title navbar__subtitle">Categories</h3>
+          <ul class="list list--categories">
+            <li class="list__item">Comedy</li>
+            <li class="list__item">Drama</li>
+            <li class="list__item">Animated</li>
+            <li class="list__item">Action</li>
+            <li class="list__item">Fantasy</li>
+            <li class="list__item">Kids</li>
+            <li class="list__item">Familiar</li>
+            <li class="list__item">See more ...</li>
+          </ul>
+        </div>
+      </div>
+      <div class="aside-tab">
+        <div class="tab__icon tab__icon--vertical"></div>
+      </div>
+    </aside>
+    <section class="spotlight">
+      <img
+        class="spotloght__img"
+        src="https://film.org.pl/wp-content/uploads/2021/01/alita-battle-angel.jpg"
+        alt="a movie poster"
+      />
+      <div class="spotlight__panel-container">
+        <div class="panel__tag">
+          <div class="tab__icon"></div>
+        </div>
+
+        <div class="spotlight__panel">
+          <button class="spotlight__button">
+            <span class="button__icon button__icon--play"></span>Watch Trailer
+          </button>
+          <button class="spotlight__button">
+            <span class="button__icon button__icon--info"></span>More Info
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <main class="catalog">
+      <section class="catalog__item comedy">
+        <div class="item-header">
+          <span class="item-header__line"></span>
+          <div class="item-header__right">
+            <h3 class="item-header__title">Sci-fiction</h3>
+            <div class="item-header__progress">
+              <span class="progress__icon progress__icon--big"></span>
+              <span class="progress__icon progress__icon--small"></span>
+              <span class="progress__icon progress__icon--small"></span>
+            </div>
+          </div>
+        </div>
+        <div class="carousel">
+          <div class="carousel__item movie">
+            <img
+              class="movie__img"
+              src="https://i0.wp.com/geekzpot.net/wp-content/uploads/2018/03/ready-player-one-new-poster-1.jpg?fit=1920%2C1080&ssl=1"
+              alt=""
+            />
+          </div>
+          <div class="carousel__item movie">
+            <img
+              class="movie__img"
+              src="https://i0.wp.com/geekzpot.net/wp-content/uploads/2018/03/ready-player-one-new-poster-1.jpg?fit=1920%2C1080&ssl=1"
+              alt=""
+            />
+          </div>
+          <div class="carousel__item movie">
+            <img
+              class="movie__img"
+              src="https://i0.wp.com/geekzpot.net/wp-content/uploads/2018/03/ready-player-one-new-poster-1.jpg?fit=1920%2C1080&ssl=1"
+              alt=""
+            />
+          </div>
+          <div class="carousel__item movie">
+            <img
+              class="movie__img"
+              src="https://i0.wp.com/geekzpot.net/wp-content/uploads/2018/03/ready-player-one-new-poster-1.jpg?fit=1920%2C1080&ssl=1"
+              alt=""
+            />
+          </div>
+          <div class="carousel__item movie">
+            <img
+              class="movie__img"
+              src="https://i0.wp.com/geekzpot.net/wp-content/uploads/2018/03/ready-player-one-new-poster-1.jpg?fit=1920%2C1080&ssl=1"
+              alt=""
+            />
+          </div>
+        </div>
+        <span class="carousel__next-icon"></span>
+      </section>
+    </main>
+    <section class="movie-detail-modal inactive">
+      <div class="modal__panel-container">
+        <header class="modal__header">
+          <p class="modal__title">
+            <span class="button__icon--play button__icon"></span>Alita
+          </p>
+        </header>
+        <div class="modal__info">
+          <p class="info__main">
+            En un mundo post-apocalíptico, los humanos viven en una ciudad
+            flotante mientras que los androides son esclavizados en la ciudad en
+            ruinas debajo. Pero todo cambia cuando Alita, una cyborg con
+            habilidades de combate avanzadas, se une a un grupo de rebeldes
+            humanos para luchar por la libertad. Con impresionantes efectos
+            visuales y una trama emocionante llena de acción.
+          </p>
+          <div class="info__details">
+            <div class="detail__data">
+              <p class="detail__time">2h 2min</p>
+              <p class="detail__year">2019</p>
+              <p class="detail__age">+13</p>
+              <p class="details__score">
+                <span class="start-icon">⭐️</span> 4.5
+              </p>
+            </div>
+            <div class="detail__tags">
+              <p class="tag__item">Action</p>
+              <p class="tag__item">Adventure</p>
+              <p class="tag__item">Futuristic</p>
+              <p class="tag__item">Sci-fiction</p>
+            </div>
+            <button class="details__add-to-list">Add to Watch List</button>
+            <aside class="detail__actors">
+              <div class="actor-container">
+                <div class="actor">
+                  <div class="actor__img"></div>
+                  <div class="actor__detail">
+                    <p class="actor__text--bold actor__text">Rosa Salazar</p>
+                    <p class="actor__text">Alita</p>
+                  </div>
+                </div>
+                <div class="actor">
+                  <div class="actor__img"></div>
+                  <div class="actor__detail">
+                    <p class="actor__text--bold actor__text">Rosa Salazar</p>
+                    <p class="actor__text">Alita</p>
+                  </div>
+                </div>
+                <div class="actor">
+                  <div class="actor__img"></div>
+                  <div class="actor__detail">
+                    <p class="actor__text--bold actor__text">Rosa Salazar</p>
+                    <p class="actor__text">Alita</p>
+                  </div>
+                </div>
+                <div class="actor">
+                  <div class="actor__img"></div>
+                  <div class="actor__detail">
+                    <p class="actor__text--bold actor__text">Rosa Salazar</p>
+                    <p class="actor__text">Alita</p>
+                  </div>
+                </div>
+                <div class="actor">
+                  <div class="actor__img"></div>
+                  <div class="actor__detail">
+                    <p class="actor__text--bold actor__text">Rosa Salazar</p>
+                    <p class="actor__text">Alita</p>
+                  </div>
+                </div>
+              </div>
+              <div class="aside-tab">
+                <div class="tab__icon tab__icon--vertical"></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+        <div class="modal__recomended">
+          <p class="recomended__title">Similar productions</p>
+          <span class="item-header__line modal__line"></span>
+          <div class="carousel carousel--modal">
+            <div class="carousel__item movie">
+              <img
+                class="movie__img"
+                src="https://i0.wp.com/geekzpot.net/wp-content/uploads/2018/03/ready-player-one-new-poster-1.jpg?fit=1920%2C1080&ssl=1"
+                alt=""
+              />
+            </div>
+            <div class="carousel__item movie">
+              <img
+                class="movie__img"
+                src="https://i0.wp.com/geekzpot.net/wp-content/uploads/2018/03/ready-player-one-new-poster-1.jpg?fit=1920%2C1080&ssl=1"
+                alt=""
+              />
+            </div>
+            <div class="carousel__item movie">
+              <img
+                class="movie__img"
+                src="https://i0.wp.com/geekzpot.net/wp-content/uploads/2018/03/ready-player-one-new-poster-1.jpg?fit=1920%2C1080&ssl=1"
+                alt=""
+              />
+            </div>
+            <div class="carousel__item movie">
+              <img
+                class="movie__img"
+                src="https://i0.wp.com/geekzpot.net/wp-content/uploads/2018/03/ready-player-one-new-poster-1.jpg?fit=1920%2C1080&ssl=1"
+                alt=""
+              />
+            </div>
+            <div class="carousel__item movie">
+              <img
+                class="movie__img"
+                src="https://i0.wp.com/geekzpot.net/wp-content/uploads/2018/03/ready-player-one-new-poster-1.jpg?fit=1920%2C1080&ssl=1"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal__close-icon"><p>X</p></div>
+      </div>
+      <div class="modal__background"></div>
+    </section>
+    <script src="./src/main.js"></script>
+  </body>
+</html>

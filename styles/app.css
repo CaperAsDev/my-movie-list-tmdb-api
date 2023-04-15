@@ -26,13 +26,13 @@
   --translucid-background-light-high: rgba(175, 165, 182, 0.8);
 }
 html {
-  background-color: var(--background-color);
+  background: var(--background-color);
 }
 body {
   height: fit-content;
 	width: 100vw;
 	overflow-x: hidden;
-  background: var(--background-gradient);
+	background: var(--background-gradient);
   font-family: var(--second-font);
 }
 .header {
@@ -150,6 +150,14 @@ body {
   text-decoration: none;
   list-style: none;
 }
+.list--categories{
+	max-height: 20vh;
+	overflow: scroll;
+	overflow-x: hidden;
+	scrollbar-color: var(--contrast-color) transparent;
+	scrollbar-width: thin;
+	margin-bottom: 10px;
+}
 .navbar__subtitle {
   color: var(--subtitle-color);
   font-weight: normal;
@@ -189,7 +197,7 @@ body {
   position: relative;
   display: flex;
   height: fit-content;
-  max-height: 70%;
+  max-height: 70vh;
   z-index: 0;
   overflow: hidden;
 }
@@ -298,10 +306,12 @@ body {
 }
 .item-header__right {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr 1fr;
+	place-items: center;
+	border-right: 1px solid var(--translucid-background-light);
 }
 .item-header__title {
-	text-align: end;
+	text-align: center;
   cursor: pointer;
   grid-column: 1 / 2;
   color: var(--main-text-color);
@@ -311,45 +321,50 @@ body {
   color: var(--contrast-color);
   transform: scale(1.1);
 }
+.item-header__progress-container{
+	position: relative;
+	width: 100%;
+	display: grid;
+	place-items: center;
+}
 .item-header__progress {
-  grid-column: 2 / 3;
-  display: grid;
-  min-width: 80px;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-  justify-self: end;
-  justify-content: center;
-  align-items: center;
+	position: absolute;
+	height: 5px;
+	width: 1%;
+	background: var(--translucid-background-light-high);
+	justify-self: left;
 }
-.progress__icon {
-  display: inline-block;
-  background-color: var(--main-text-color);
-  height: 2px;
+.item-header__progress-background{
+	height: 3px;
+	width: 100%;
+	background: var(--translucid-background-light);
 }
-.progress__icon--big {
-  transform: scaleY(2);
-}
+
 .carousel {
-	padding-top: 10px;
+	padding: 10px;
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   width: 100%;
   display: flex;
   gap: 10px;
 	scroll-snap-type: x mandatory;
-  overflow-x: auto;
+  overflow-x: scroll;
 	overflow-y: hidden;
 	scrollbar-color: var(--contrast-color) transparent ;
-	scrollbar-width: thin;
+	scrollbar-width: none;
 }
 .carousel__item {
 	width: 200px;
-	scroll-snap-align: start;
+	scroll-snap-stop: always;
+	scroll-snap-align: center;
   height: 113px;
   cursor: pointer;
 }
 .carousel__item:hover {
-  transform: translateY(-10%) scale(1.05);
+	box-shadow: inset 0px 0px 6px var(--translucid-background-light);
+}
+.carousel__item:hover .movie__img{
+	transform: translateY(-10%) scale(1.05);
 }
 .movie__img {
   height: 113px;
@@ -360,7 +375,6 @@ body {
 }
 .carousel__icon {
   cursor: pointer;
-  
   width: 30px;
   height: 100%;
   background-image: url(https://parspng.com/wp-content/uploads/2021/11/arrowpng.parspng.com-13.png);

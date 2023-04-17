@@ -1,9 +1,9 @@
-import { getGenreList } from "./navigation.mjs";
+import { getMainInfo } from "./navigation.mjs";
 window.addEventListener("DOMContentLoaded", startPage, false);
 window.addEventListener("hashchange", navigator, false);
 
 function startPage(){
-	getGenreList();
+	getMainInfo();
 }
 
 function navigator() {

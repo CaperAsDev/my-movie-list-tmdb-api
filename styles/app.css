@@ -201,9 +201,14 @@ body {
   z-index: 0;
   overflow: hidden;
 }
-.spotloght__img {
+.image-container {
+	cursor: pointer;
   width: 100%;
   height: max-content;
+}
+.image-spotlight{
+	width: 100%;
+	object-fit: cover;
 }
 .spotlight__panel-container {
   display: flex;

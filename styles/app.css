@@ -117,6 +117,10 @@ body {
   opacity: 1;
 }
 .navbar {
+  height: 80vh;
+  overflow: auto;
+  scrollbar-color: var(--contrast-color) transparent;
+	scrollbar-width: thin;
   background-color: var(--translucid-background-dark);
   padding: 0 15px;
 }
@@ -151,11 +155,7 @@ body {
   list-style: none;
 }
 .list--categories{
-	max-height: 20vh;
-	overflow: scroll;
 	overflow-x: hidden;
-	scrollbar-color: var(--contrast-color) transparent;
-	scrollbar-width: thin;
 	margin-bottom: 10px;
 }
 .navbar__subtitle {
@@ -397,12 +397,12 @@ body {
 	grid-row: 2 / 3;
 	transform: rotate(90deg);
 }
-/* !Modal Detalle Pelicula ⬇️ */
-.movie-detail-modal {
+/* !Modal ⬇️ */
+.modal {
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
   top: 0;
   right: 0;
   width: 100vw;
@@ -416,7 +416,80 @@ body {
   height: 100%;
   background: var(--translucid-background-dark);
 }
-.modal__panel-container {
+.modal-container {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  overflow: hidden;
+  overflow-y: scroll;
+  scrollbar-color: var(--contrast-color) transparent;
+  scrollbar-width: thin;
+  background: var(--translucid-background-light-high);
+}
+.modal-header{
+  position: sticky;
+  top: 0px;
+  display: grid;
+  place-items: center;
+  height: 60px;
+  background: var(--translucid-background-dark);
+  z-index: 10;
+}
+.modal-title{
+  text-align: center;
+  font-size: 30px;
+  font-weight: normal;
+  color: var(--contrast-color);
+}
+/* !Modal categories and trends */
+.modal .category-container{
+  margin: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.category__item:hover .category__img{
+  transform: translateY(-10%) scale(1.05);
+  margin-bottom: -11px;
+}
+.category__item:hover{
+  box-shadow: inset 2px 2px 26px var(--translucid-background-dark);
+}
+.category__item{
+  cursor: pointer;
+  width: 24%;
+  min-width: 200px;
+  height: 168px;
+  margin-bottom: 10px;
+}
+.category__img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.trends-title{
+  justify-self: self-start;
+  position: sticky;
+  top: 0px;
+  padding: 11px 15px;
+  font-size: 24px;
+  color: var(--main-text-color);
+  background: var(--dark-font-color);
+}
+.trends-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px;
+  place-content: center;
+}
+/* !Modal movie Detail */
+.detail-modal-container {
   position: relative;
   z-index: 10;
   display: grid;
@@ -433,7 +506,7 @@ body {
   scrollbar-width: thin;
   background: var(--translucid-background-light-high);
 }
-.modal__header {
+.detail-modal__header {
   display: flex;
   align-items: end;
   grid-row: 1 / 2;
@@ -444,6 +517,7 @@ body {
   background-repeat: no-repeat;
   width: 100%;
 }
+
 .modal__title {
   cursor: pointer;
   display: flex;

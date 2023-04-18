@@ -41,7 +41,7 @@
           <h3 class="filters__title navbar__subtitle">Status</h3>
           <ul class="list list--filters">
             <li class="list__item">Latest</li>
-            <li class="list__item">Trending</li>
+            <li class="list__item" id="trendingAside">Trending</li>
             <li class="list__item">For you</li>
             <li class="list__item">Continue Watching</li>
             <li class="list__item">Watch again</li>
@@ -59,8 +59,8 @@
     <main class="main-content-container">
       <div class="catalog"></div>
     </main>
-    <section class="movie-detail-modal inactive">
-      <div class="modal__panel-container">
+    <section class="movie-detail-modal inactive modal">
+      <div class="modal__panel-container modal-container">
         <header class="modal__header">
           <p class="modal__title">
             <span class="button__icon--play button__icon"></span>Alita
@@ -176,7 +176,7 @@
             </div>
           </div>
         </div>
-        <div class="modal__close-icon"><p>X</p></div>
+        <div class="modal__close-icon movie-detail__close-icon"><p>X</p></div>
       </div>
       <div class="modal__background"></div>
     </section>

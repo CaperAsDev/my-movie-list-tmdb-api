@@ -1,15 +1,18 @@
 //!Creacion de nodos para el catalogo
 export function createCatalogSection(category, arrObjs) {
   const section = document.createElement("section");
-  const categoryName = category.replace(/\s+/g, "_");
+  const categoryName = category.name.replace(/\s+/g, "_");
   section.classList.add("catalog__item", categoryName);
-  const { catHeader, headerProgress } = createCategoryHeader(
-    category,
-    categoryName
-  );
+  const { catHeader, headerProgress } = createCategoryHeader(category);
   const carousel = createCarousel(arrObjs);
   const nextIcon = document.createElement("span");
+  nextIcon.addEventListener("click", () => {
+    arrowScroll(carousel, "+");
+  });
   const beforeIcon = document.createElement("span");
+  beforeIcon.addEventListener("click", () => {
+    arrowScroll(carousel, "-");
+  });
   nextIcon.classList.add("carousel__icon", "carousel__icon--next");
   beforeIcon.classList.add("carousel__icon", "carousel__icon--before");
 
@@ -18,7 +21,7 @@ export function createCatalogSection(category, arrObjs) {
   scrollHandler(carousel, headerProgress);
   return section;
 }
-function createCategoryHeader(category, categoryName) {
+function createCategoryHeader(category) {
   const catHeader = document.createElement("div");
   catHeader.classList.add("item-header");
 
@@ -30,10 +33,16 @@ function createCategoryHeader(category, categoryName) {
 
   const headerTitle = document.createElement("h3");
   headerTitle.className = "item-header__title";
-  headerTitle.innerText = category;
-  headerTitle.addEventListener("click", () => {
-    location.hash = `category=${categoryName}`;
-  });
+  headerTitle.innerText = category.name;
+  if (category.name === "Trending") {
+    headerTitle.addEventListener("click", () => {
+      location.hash = `trend`;
+    });
+  } else {
+    headerTitle.addEventListener("click", () => {
+      location.hash = `category=${category.id}`;
+    });
+  }
 
   const headerProgress = document.createElement("div");
   headerProgress.className = "item-header__progress";
@@ -83,24 +92,13 @@ function createMovieImg({ backdrop_path, title, name, poster_path }, imgSize) {
   movie.append(img);
   return { movie, img };
 }
-function scrollHandler(container, progressBar) {
-  container.addEventListener("scroll", (e) => {
-    let scrollLeft = container.scrollLeft;
-    let scrollWidth = container.scrollWidth;
-    let clientWidth = container.clientWidth;
-
-    let scrollPercent = (scrollLeft / (scrollWidth - clientWidth)) * 100;
-    progressBar.style.width = `${scrollPercent}%`;
-  });
-}
 //!Creacion de nodos de la lista de generos en el sideBar
-export function createListItem(category) {
+export function createListItem({ name, id }) {
   const li = document.createElement("li");
   li.classList.add("list__item");
-  li.innerText = category;
-  const categoryName = category.replace(/\s+/g, "_");
+  li.innerText = name;
   li.addEventListener("click", () => {
-    location.hash = `category=${categoryName}`;
+    location.hash = `category=${id}`;
   });
   return li;
 }
@@ -159,44 +157,138 @@ export function createSpotlight(obj) {
   return section;
 }
 //! Creacion seccion por Categoria
-export function createCategorySection(list) {
-  const categoryModal = document.createElement("section");
-  categoryModal.classList.add("category-modal");
+export function createCategorySection(list, categoryName) {
+  const { modal, mainContent, modalTitle } = createModal();
 
-  const categoryContentContainer = document.createElement("div");
-  categoryContentContainer.classList.add("category-container");
+  modal.classList.add("category-modal");
+  mainContent.classList.add("category-container");
 
-  const categoryBackground = document.createElement("div");
-  categoryBackground.classList.add("category-background");
-  categoryModal.append(categoryContentContainer, categoryBackground);
-
-  const categoryTitle = document.createElement("h4");
-  categoryTitle.classList.add("category__title");
-
-  const categoryContent = document.createElement("div");
-  categoryContent.classList.add("category-content");
-  categoryContentContainer.append(
-    categoryTitle,
-    categoryContent,
-    closeContainer
-  );
-
-  const closeContainer = document.createElement("div");
-  closeContainer.classList.add("close-container");
-
-  const closeIcon = document.createElement("span");
-  closeIcon.classList.add("close__icon");
-  closeContainer.append(closeIcon);
+  modalTitle.innerText = categoryName;
+  modalTitle.classList.add("category__title");
 
   const nodeList = [];
   list.forEach((movieItem) => {
-    const { movie } = createMovieImg(movieItem, "w300");
+    const { movie, img } = createMovieImg(movieItem, "w300");
     movie.classList.add("category__item");
+    img.classList.add("category__img");
     movie.setAttribute("movie-id", movieItem.id);
     nodeList.push(movie);
   });
 
-  categoryContent.append(...nodeList);
+  mainContent.append(...nodeList);
 
-  return categoryModal;
+  return modal;
+}
+
+//!Crear modal de trending
+export function createTrendsModal(dayList, weekList, title) {
+  const { modal, mainContent, modalTitle } = createModal();
+  modal.classList.add("trends-modal");
+  mainContent.classList.add("trending-container");
+  modalTitle.innerText = title;
+
+  const dayTrendsTitle = document.createElement("h5");
+  dayTrendsTitle.classList.add("day-trends-title", "trends-title");
+  dayTrendsTitle.innerText = "Today";
+
+  const weekTrendsTitle = document.createElement("h5");
+  weekTrendsTitle.classList.add("week-trends-title", "trends-title");
+  weekTrendsTitle.innerText = "This week";
+
+  const dayTrendsContainer = document.createElement("div");
+  dayTrendsContainer.classList.add("trends-container--day", "trends-container");
+
+  const weekTrendsContainer = document.createElement("div");
+  weekTrendsContainer.classList.add("trends-container--week", "trends-container");
+
+  const dayNodeList = createNodeList(dayList);
+  const weekNodeList = createNodeList(weekList);
+  
+  dayTrendsContainer.append(...dayNodeList);
+  weekTrendsContainer.append(...weekNodeList);
+
+  mainContent.append(
+    dayTrendsTitle,
+    dayTrendsContainer,
+    weekTrendsTitle,
+    weekTrendsContainer
+  );
+
+  return modal;
+}
+function createNodeList(list) {
+  const nodeList = [];
+  list.forEach((movieItem) => {
+    const { movie, img } = createMovieImg(movieItem, "w300");
+    movie.classList.add("category__item");
+    img.classList.add("category__img");
+    movie.setAttribute("movie-id", movieItem.id);
+    nodeList.push(movie);
+  });
+  console.log(nodeList);
+  return nodeList;
+}
+//!Creacion de panel Modal
+
+function createModal() {
+  const modal = document.createElement("section");
+  modal.classList.add("modal");
+
+  const modalContainer = document.createElement("div");
+  modalContainer.classList.add("modal-container");
+
+  const mainContent = document.createElement("main");
+  mainContent.classList.add("main-content");
+
+  const header = document.createElement("header");
+  header.classList.add("modal-header");
+
+  const modalTitle = document.createElement("h4");
+  modalTitle.classList.add("modal-title");
+
+  const modalBackground = document.createElement("div");
+  modalBackground.addEventListener("click", () => {
+    modal.remove();
+    location.hash = "#home";
+  });
+  modalBackground.classList.add("modal__background");
+
+  const closeIcon = document.createElement("div");
+  closeIcon.innerText = "X";
+  closeIcon.addEventListener("click", () => {
+    modal.remove();
+    location.hash = "#home";
+  });
+  closeIcon.classList.add("modal__close-icon");
+  header.append(modalTitle);
+  modal.append(modalContainer, modalBackground);
+  modalContainer.append(header, mainContent, closeIcon);
+
+  return { modal, mainContent, modalTitle };
+}
+//!Funciones complementarias */
+function scrollHandler(container, progressBar) {
+  container.addEventListener("scroll", (e) => {
+    let scrollLeft = container.scrollLeft;
+    let scrollWidth = container.scrollWidth;
+    let clientWidth = container.clientWidth;
+
+    let scrollPercent = (scrollLeft / (scrollWidth - clientWidth)) * 100;
+    progressBar.style.width = `${scrollPercent}%`;
+  });
+}
+function arrowScroll(container, operacion) {
+  let scrollLeft = container.scrollLeft;
+  let clientWidth = container.clientWidth;
+
+  if (operacion == "+") {
+    let newPosition = scrollLeft + clientWidth;
+    container.scrollTo(newPosition, 0);
+    console.log("corriendo a la der");
+  } else {
+    let newPosition = scrollLeft - clientWidth;
+    container.scrollTo(newPosition, 0);
+    console.log("corriendo a la izq");
+    scrollLeft -= clientWidth;
+  }
 }

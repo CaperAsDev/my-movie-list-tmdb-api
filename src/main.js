@@ -1,4 +1,4 @@
-import { getMainInfo } from "./navigation.mjs";
+import { getMainInfo, renderCategoryModal, renderTrendsModal } from "./navigation.mjs";
 window.addEventListener("DOMContentLoaded", startPage, false);
 window.addEventListener("hashchange", navigator, false);
 
@@ -31,6 +31,7 @@ const pages = [
   {
     hash: "#trend",
     go: () => {
+      renderTrendsModal();
       console.log(`Estas en trend`);
     },
   },
@@ -49,6 +50,11 @@ const pages = [
   {
     hash: "#category=",
     go: () => {
+      const hash = location.hash;
+      const hashArray = hash.split("=");
+      const id = hashArray[hashArray.length - 1];
+      console.log(id);
+      renderCategoryModal(id);
       console.log(`Estas en categories`);
     },
   },

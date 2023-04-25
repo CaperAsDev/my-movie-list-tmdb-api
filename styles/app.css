@@ -444,6 +444,25 @@ body {
   font-weight: normal;
   color: var(--contrast-color);
 }
+.back-arrow{
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  z-index: 30;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 40px;
+  line-height: 40px;
+  color: var(--dark-font-color);
+  /* background-image: url(https://parspng.com/wp-content/uploads/2021/11/arrowpng.parspng.com-13.png); */
+  background: var(--translucid-background-light-high);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
 /* !Modal categories and trends */
 .modal .category-container{
   margin: 15px;
@@ -481,14 +500,177 @@ body {
   color: var(--main-text-color);
   background: var(--dark-font-color);
 }
-.trends-container{
+.trends-container, .search-container{
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin: 10px;
   place-content: center;
 }
+.search-title, .empty-search-title{
+  padding: 0 10px;
+}
+.search-modal__value{
+  color: var(--main-text-color);
+}
 /* !Modal movie Detail */
+
+.detail-container{
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-wrap: wrap;
+}
+.movie-image-container{
+  min-width: 460px;
+  max-width: 60%;
+  height: auto;
+}
+.detail-movie-image{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+.movie-info{
+  position: relative;
+  min-width: 360px;
+  max-width: 40%;
+  min-height: 70%;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.movie-overview{
+  text-align: justify;
+  padding: 10px;
+  min-width: 330px;
+  max-width: 700px;
+}
+.movie-data{
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px;
+}
+.movie-interactions{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.ul{
+  list-style: none;
+  margin: 5px;
+}
+.movie-interactions__button{
+  cursor: pointer;
+  padding: 5px 14px;
+  border-radius: 20px;
+  background: var(--translucid-background-dark);
+  border: none;
+  color: var(--contrast-color);
+  margin: 5px;
+  font-size: 16px;
+}
+.actors-aside{
+  position: absolute;
+  width: 100%;
+  left: calc(-100% + 13px);
+  top: 0;
+  display: flex;
+  transition: transform, 1s;
+}
+.actors-aside:hover {
+  transform: translateX(calc(100% - 14px));
+}
+.actors-container{
+  display: flex;
+  min-width: 360px;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  background: var(--translucid-background-dark);
+  padding: 5px;
+}
+
+.actor {
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  height: 100%;
+  max-width: 25%;
+  min-width: 120px;
+  background: var(--translucid-background-light-high);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-left: 5px;
+}
+.voice-actor{
+  background: var(--contrast-color);
+}
+.actor__img {
+  width: 100%;
+  background-image: url(https://www.themoviedb.org/t/p/w300_and_h450_bestv2/pc2tCeB99HtmrghAoPKksZkbzUU.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.actor__text{
+  font-size: 14px;
+}
+.actor__text--bold {
+  color: var(--dark-font-color);
+  font-weight: bold;
+}
+.detail-carousel{
+  width: 85vw;
+}
+.similar-productions__title{
+  display:block;
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  color: var(--dark-font-color);
+  font-size: 20px;
+  border-bottom: 2px solid var(--contrast-color);
+}
+.similar-productions{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 767px) {
+  .movie-image-container, .movie-info{
+    min-width: 300px;
+    max-width: 100%;
+    min-height: auto;
+  }
+  .detail-container{
+    height: auto;
+  }
+  .actors-aside{
+    left: calc(-100% + 13px);
+  }
+  /* Estilos para dispositivos móviles */
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .movie-image-container, .movie-info{
+    max-width: 100%;
+    min-height: auto;
+  }
+  .movie-info{
+    min-height: 260px;
+  }
+  .actors-aside{
+    height: 100%;
+    left: calc(-100% + 13px);
+  }
+  .detail-container{
+    height: 80%;
+  }
+}
+
+
 .detail-modal-container {
   position: relative;
   z-index: 10;
@@ -506,7 +688,7 @@ body {
   scrollbar-width: thin;
   background: var(--translucid-background-light-high);
 }
-.detail-modal__header {
+.modal__header {
   display: flex;
   align-items: end;
   grid-row: 1 / 2;
@@ -596,32 +778,7 @@ body {
   overflow-x: auto;
   scrollbar-color: var(--contrast-color) transparent;
 }
-.actor {
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  max-width: 25%;
-  min-width: 120px;
-  background: var(--translucid-background-light-high);
-  border-radius: 5px;
-  overflow: hidden;
-}
-.actor__img {
-  height: 70%;
-  width: 100%;
-  background-image: url(https://www.themoviedb.org/t/p/w300_and_h450_bestv2/pc2tCeB99HtmrghAoPKksZkbzUU.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.actor__text--bold {
-  color: var(--dark-font-color);
-  font-weight: bold;
-  cursor: pointer;
-}
+
 .modal__recomended {
   display: flex;
   flex-direction: column;
@@ -662,3 +819,4 @@ body {
 .inactive {
   display: none;
 }
+

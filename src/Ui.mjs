@@ -69,7 +69,7 @@ function createCarousel(list) {
 function createCarouselItem(obj) {
   const { movie, img } = createMovieImg(obj, "w300");
   movie.classList.add("carousel__item", "movie");
-  movie.setAttribute("id", obj.id);
+  img.setAttribute("movie-id", obj.id);
 
   img.classList.add("movie__img");
   return movie;
@@ -109,7 +109,7 @@ export function createSpotlight(obj) {
 
   const { movie, img } = createMovieImg(obj, "original");
   movie.classList.add("image-container");
-  movie.setAttribute("movie-id", obj.id);
+  img.setAttribute("movie-id", obj.id);
   img.classList.add("image-spotlight");
 
   const panelContainer = document.createElement("div");
@@ -166,14 +166,7 @@ export function createCategorySection(list, categoryName) {
   modalTitle.innerText = categoryName;
   modalTitle.classList.add("category__title");
 
-  const nodeList = [];
-  list.forEach((movieItem) => {
-    const { movie, img } = createMovieImg(movieItem, "w300");
-    movie.classList.add("category__item");
-    img.classList.add("category__img");
-    movie.setAttribute("movie-id", movieItem.id);
-    nodeList.push(movie);
-  });
+  const nodeList = createNodeList(list);
 
   mainContent.append(...nodeList);
 
@@ -199,11 +192,14 @@ export function createTrendsModal(dayList, weekList, title) {
   dayTrendsContainer.classList.add("trends-container--day", "trends-container");
 
   const weekTrendsContainer = document.createElement("div");
-  weekTrendsContainer.classList.add("trends-container--week", "trends-container");
+  weekTrendsContainer.classList.add(
+    "trends-container--week",
+    "trends-container"
+  );
 
   const dayNodeList = createNodeList(dayList);
   const weekNodeList = createNodeList(weekList);
-  
+
   dayTrendsContainer.append(...dayNodeList);
   weekTrendsContainer.append(...weekNodeList);
 
@@ -222,14 +218,174 @@ function createNodeList(list) {
     const { movie, img } = createMovieImg(movieItem, "w300");
     movie.classList.add("category__item");
     img.classList.add("category__img");
-    movie.setAttribute("movie-id", movieItem.id);
+    img.setAttribute("movie-id", movieItem.id);
     nodeList.push(movie);
   });
-  console.log(nodeList);
   return nodeList;
 }
-//!Creacion de panel Modal
+//!Crear modal de busqueda
+export function createSearchModal(list, searchedValue) {
+  const { modal, mainContent, modalTitle } = createModal();
+  modal.classList.add("search-modal");
+  mainContent.classList.add("search-container");
+  modalTitle.classList.add("search-title");
+  modalTitle.innerHTML = `Resultados de busqueda: <span class="search-modal__value">${searchedValue}</span>`;
 
+  const nodeList = createNodeList(list);
+
+  mainContent.append(...nodeList);
+  return modal;
+}
+export function createEmptySearchResults(searchedValue) {
+  const { modal, mainContent, modalTitle } = createModal();
+  modal.classList.add("empty-search-modal");
+  mainContent.classList.add("empty-search-container");
+  modalTitle.classList.add("empty-search-title");
+  modalTitle.innerHTML = `NO hay Resultados para la busqueda: <span class="search-modal__value">${searchedValue}</span>`;
+
+  return modal;
+}
+//?Creacion modal
+//!Movie Details
+export function createMovieDetailsModal(
+  movieObj,
+  similarMoviesArr,
+  casting,
+  trailers
+) {
+  const { modal, mainContent } = createModal();
+  modal.classList.add("detail-modal");
+  mainContent.classList.add("detail-container");
+
+  const header = mainContent.previousElementSibling;
+  header.remove();
+
+  const similarProductions = document.createElement("div");
+  similarProductions.classList.add("similar-productions");
+  mainContent.insertAdjacentElement("afterend", similarProductions);
+
+  const { movie, img } = createMovieImg(movieObj, "w780");
+  movie.classList.add("movie-image-container");
+  img.classList.add("detail-movie-image");
+  const movieInfo = document.createElement("div");
+  movieInfo.classList.add("movie-info");
+
+  const overview = document.createElement("div");
+  overview.classList.add("movie-overview");
+  overview.textContent = movieObj.overview;
+  const movieData = document.createElement("div");
+  movieData.classList.add("movie-data");
+
+  const movieRuntime = formatMovieDuration(movieObj.runtime);
+  const movieGenres = movieObj.genres;
+  const genresNames = movieGenres.map((genre) => genre.name);
+
+  const ulInfo = createUl(
+    movieRuntime,
+    movieObj.release_date,
+    movieObj.vote_average.toFixed(1)
+  );
+  ulInfo.classList.add("ul-info", "ul");
+  const ulCategories = createUl(...genresNames);
+  ulCategories.classList.add("ul-categories", "ul");
+  const movieInteractions = document.createElement("div");
+  movieInteractions.classList.add("movie-interactions");
+
+  const addToWatchButton = document.createElement("button");
+  addToWatchButton.classList.add("movie-interactions__button");
+  addToWatchButton.textContent = "🎥";
+  addToWatchButton.title = "Add to Watch List";
+  const addToFavButton = document.createElement("button");
+  addToFavButton.classList.add("movie-interactions__button");
+  addToFavButton.textContent = "❤️";
+  addToFavButton.title = "Add to Favorites";
+
+  if (casting.length > 4) {
+    const actorsAside = document.createElement("aside");
+    actorsAside.classList.add("actors-aside");
+    const actorsContainer = document.createElement("div");
+    actorsContainer.classList.add("actors-container");
+    const asideTab = document.createElement("div");
+    asideTab.classList.add("aside-tab");
+    const tabIcon = document.createElement("div");
+    tabIcon.classList.add("tab__icon", "tab__icon--vertical");
+
+    const actorCardsNodes = [];
+    casting.forEach((actor) => {
+      const actorCard = createActorCard(actor);
+      actorCardsNodes.push(actorCard);
+    });
+    actorsContainer.append(...actorCardsNodes);
+
+    asideTab.append(tabIcon);
+    actorsAside.append(actorsContainer, asideTab);
+    movieInfo.append(actorsAside);
+  }
+
+  const similarProductionsTitle = document.createElement("h4");
+  similarProductionsTitle.textContent = "Similar Productions";
+  similarProductionsTitle.classList.add("similar-productions__title")
+  const similarProductionsCarousel = createCarousel(similarMoviesArr);
+  similarProductionsCarousel.classList.add("detail-carousel");
+
+  const divisor = document.createElement("div");
+  divisor.classList.add("line", "line--long");
+
+  mainContent.append(movie, movieInfo);
+  movieInfo.append(overview, movieData);
+  movieData.append(ulInfo, ulCategories, movieInteractions);
+  movieInteractions.append(addToFavButton, addToWatchButton);
+  similarProductions.append(
+    similarProductionsTitle,
+    similarProductionsCarousel
+  );
+
+  return modal;
+}
+function createActorCard({ profile_path, original_name, character, shortCharacterName, voiceActor }) {
+  const cardContainer = document.createElement("div");
+  cardContainer.className = "actor";
+  voiceActor? cardContainer.classList.add("voice-actor"):null;
+
+  const baseUrl = "https://image.tmdb.org/t/p/";
+  const imgSize = "w185";
+  const cardImg = document.createElement("img");
+  cardImg.src = `${baseUrl}${imgSize}${profile_path}`;
+  cardImg.className = "actor__img";
+
+  const cardInfo = document.createElement("div");
+  cardInfo.className = "actor__detail";
+
+  const name = document.createElement("p");
+  name.classList.add("actor__text--bold", "actor__text");
+  name.textContent = original_name;
+
+  const characterP = document.createElement("p");
+  characterP.className = "actor__text";
+  characterP.title = character;
+  characterP.textContent = shortCharacterName;
+
+  cardContainer.append(cardImg, cardInfo);
+  cardInfo.append(name, characterP);
+
+  return cardContainer;
+}
+function formatMovieDuration(number) {
+  const hours = parseInt(number / 60);
+  const minuts = number % 60;
+  const time = `${hours}h ${minuts}m`;
+  return time;
+}
+function createUl(...li) {
+  const ul = document.createElement("ul");
+  for (const listItem of li) {
+    const lItem = document.createElement("li");
+    lItem.textContent = listItem;
+    ul.appendChild(lItem);
+  }
+  return ul;
+}
+//!Creacion de panel Modal
 function createModal() {
   const modal = document.createElement("section");
   modal.classList.add("modal");
@@ -249,20 +405,25 @@ function createModal() {
   const modalBackground = document.createElement("div");
   modalBackground.addEventListener("click", () => {
     modal.remove();
-    location.hash = "#home";
+    history.back();
   });
   modalBackground.classList.add("modal__background");
+
+  const backIcon = document.createElement("div");
+  backIcon.textContent  = "<";
+  backIcon.classList.add("back-arrow");
+  backIcon.addEventListener("click", () => history.back())
 
   const closeIcon = document.createElement("div");
   closeIcon.innerText = "X";
   closeIcon.addEventListener("click", () => {
-    modal.remove();
-    location.hash = "#home";
+    location.hash = "home";
   });
   closeIcon.classList.add("modal__close-icon");
+
   header.append(modalTitle);
   modal.append(modalContainer, modalBackground);
-  modalContainer.append(header, mainContent, closeIcon);
+  modalContainer.append(header, mainContent, closeIcon,backIcon);
 
   return { modal, mainContent, modalTitle };
 }

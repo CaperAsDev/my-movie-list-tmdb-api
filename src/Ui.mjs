@@ -76,7 +76,7 @@ function createCarouselItem(obj) {
 }
 function createMovieImg({ backdrop_path, title, name, poster_path }, imgSize) {
   const movie = document.createElement("div");
-
+  movie.setAttribute("data-movie", title ? title : name);
   const img = document.createElement("img");
   const baseUrl = "https://image.tmdb.org/t/p/";
 
@@ -87,8 +87,7 @@ function createMovieImg({ backdrop_path, title, name, poster_path }, imgSize) {
     // console.log(movieImg);
   }
   img.alt = title ? title : name;
-  img.title = title ? title : name;
-
+  img.classList.add("movie-img--with-title");
   movie.append(img);
   return { movie, img };
 }
@@ -104,9 +103,6 @@ export function createListItem({ name, id }) {
 }
 //!Creacion de nodos para el Spotlight
 export function createSpotlight(obj) {
-  const section = document.createElement("section");
-  section.classList.add("spotlight");
-
   const { movie, img } = createMovieImg(obj, "original");
   movie.classList.add("image-container");
   img.setAttribute("movie-id", obj.id);
@@ -152,9 +148,7 @@ export function createSpotlight(obj) {
   spotlightPanel.append(spotlightBtnPlay, spotlightBtnInfo);
   panelContainer.append(panelTag, spotlightPanel);
 
-  section.append(movie, panelContainer);
-
-  return section;
+  return {movie, panelContainer};
 }
 //! Creacion seccion por Categoria
 export function createCategorySection(list, categoryName) {
@@ -172,7 +166,6 @@ export function createCategorySection(list, categoryName) {
 
   return modal;
 }
-
 //!Crear modal de trending
 export function createTrendsModal(dayList, weekList, title) {
   const { modal, mainContent, modalTitle } = createModal();
@@ -216,7 +209,7 @@ function createNodeList(list) {
   const nodeList = [];
   list.forEach((movieItem) => {
     const { movie, img } = createMovieImg(movieItem, "w300");
-    movie.classList.add("category__item");
+    movie.classList.add("category__item", "movie");
     img.classList.add("category__img");
     img.setAttribute("movie-id", movieItem.id);
     nodeList.push(movie);
@@ -270,6 +263,10 @@ export function createMovieDetailsModal(
   const movieInfo = document.createElement("div");
   movieInfo.classList.add("movie-info");
 
+  const movieTitle = document.createElement("h3");
+  movieTitle.classList.add("detail-movie-title");
+  movieTitle.append(movieObj.title);
+
   const overview = document.createElement("div");
   overview.classList.add("movie-overview");
   overview.textContent = movieObj.overview;
@@ -283,7 +280,7 @@ export function createMovieDetailsModal(
   const ulInfo = createUl(
     movieRuntime,
     movieObj.release_date,
-    movieObj.vote_average.toFixed(1)
+    Number(movieObj.vote_average.toFixed(1))
   );
   ulInfo.classList.add("ul-info", "ul");
   const ulCategories = createUl(...genresNames);
@@ -293,12 +290,11 @@ export function createMovieDetailsModal(
 
   const addToWatchButton = document.createElement("button");
   addToWatchButton.classList.add("movie-interactions__button");
-  addToWatchButton.textContent = "🎥";
-  addToWatchButton.title = "Add to Watch List";
+  dynamicButtonReaction(addToWatchButton, "Watch List", "bookmark-plus");
+
   const addToFavButton = document.createElement("button");
   addToFavButton.classList.add("movie-interactions__button");
-  addToFavButton.textContent = "❤️";
-  addToFavButton.title = "Add to Favorites";
+  dynamicButtonReaction(addToFavButton, "Favorites", "suit-heart");
 
   if (casting.length > 4) {
     const actorsAside = document.createElement("aside");
@@ -324,7 +320,7 @@ export function createMovieDetailsModal(
 
   const similarProductionsTitle = document.createElement("h4");
   similarProductionsTitle.textContent = "Similar Productions";
-  similarProductionsTitle.classList.add("similar-productions__title")
+  similarProductionsTitle.classList.add("similar-productions__title");
   const similarProductionsCarousel = createCarousel(similarMoviesArr);
   similarProductionsCarousel.classList.add("detail-carousel");
 
@@ -332,8 +328,8 @@ export function createMovieDetailsModal(
   divisor.classList.add("line", "line--long");
 
   mainContent.append(movie, movieInfo);
-  movieInfo.append(overview, movieData);
-  movieData.append(ulInfo, ulCategories, movieInteractions);
+  movieInfo.append(movieTitle, overview, movieData, movieInteractions);
+  movieData.append(ulInfo, ulCategories);
   movieInteractions.append(addToFavButton, addToWatchButton);
   similarProductions.append(
     similarProductionsTitle,
@@ -342,10 +338,16 @@ export function createMovieDetailsModal(
 
   return modal;
 }
-function createActorCard({ profile_path, original_name, character, shortCharacterName, voiceActor }) {
+function createActorCard({
+  profile_path,
+  original_name,
+  character,
+  shortCharacterName,
+  voiceActor,
+}) {
   const cardContainer = document.createElement("div");
   cardContainer.className = "actor";
-  voiceActor? cardContainer.classList.add("voice-actor"):null;
+  voiceActor ? cardContainer.classList.add("voice-actor") : null;
 
   const baseUrl = "https://image.tmdb.org/t/p/";
   const imgSize = "w185";
@@ -379,9 +381,16 @@ function formatMovieDuration(number) {
 function createUl(...li) {
   const ul = document.createElement("ul");
   for (const listItem of li) {
-    const lItem = document.createElement("li");
-    lItem.textContent = listItem;
-    ul.appendChild(lItem);
+    if(typeof listItem === "number"){
+      const icon = createIcon("trophy-fill");
+      const lItem = document.createElement("li");
+      lItem.append(icon, listItem)
+      ul.append(lItem)
+    }else{
+      const lItem = document.createElement("li");
+      lItem.textContent = listItem;
+      ul.appendChild(lItem);
+    }
   }
   return ul;
 }
@@ -410,9 +419,9 @@ function createModal() {
   modalBackground.classList.add("modal__background");
 
   const backIcon = document.createElement("div");
-  backIcon.textContent  = "<";
+  backIcon.textContent = "<";
   backIcon.classList.add("back-arrow");
-  backIcon.addEventListener("click", () => history.back())
+  backIcon.addEventListener("click", () => history.back());
 
   const closeIcon = document.createElement("div");
   closeIcon.innerText = "X";
@@ -423,7 +432,7 @@ function createModal() {
 
   header.append(modalTitle);
   modal.append(modalContainer, modalBackground);
-  modalContainer.append(header, mainContent, closeIcon,backIcon);
+  modalContainer.append(header, mainContent, closeIcon, backIcon);
 
   return { modal, mainContent, modalTitle };
 }
@@ -452,4 +461,27 @@ function arrowScroll(container, operacion) {
     console.log("corriendo a la izq");
     scrollLeft -= clientWidth;
   }
+}
+function createIcon(name) {
+  const iconTag = document.createElement("i");
+  iconTag.classList.add("bi", `bi-${name}`);
+  return iconTag;
+}
+function dynamicButtonReaction(button, section, iconName) {
+  const icon = createIcon(`${iconName}`);
+  const filledIcon = createIcon(`${iconName}-fill`);
+
+  button.append(icon, `Add to ${section}`);
+  button.title = `Add to ${section}`;
+  button.setAttribute("isAdded", false);
+  button.addEventListener("click", () => {
+    button.innerHTML = "";
+    if (button.isAdded) {
+      button.append(icon, `Add to ${section}`);
+      button.isAdded = false;
+    } else {
+      button.append(filledIcon, `Added to ${section}`);
+      button.isAdded = true;
+    }
+  });
 }

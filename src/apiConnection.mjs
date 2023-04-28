@@ -25,9 +25,3 @@ export async function getMoreAboutMovie(id,detail, dataName = "results"){
   const dataList = data[dataName]
   return dataList;
 }
-/* 
-!Cosas faltante:
-?Hacer funcionar el icono en el carousel para el scroll ( tal vez se logra con el event propagation o delegation)
-
-?Usar la lista de generos de la api para el aside.
-*/

@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/Caperactus/my-movie-list-tmdb-api/issues"
   },
-  "homepage": "https://github.com/Caperactus/my-movie-list-tmdb-api#readme"
+  "homepage": "https://github.com/Caperactus/my-movie-list-tmdb-api#readme",
+  "dependencies": {
+    "bootstrap-icons": "^1.10.4",
+    "iconoir": "^6.6.0"
+  }
 }

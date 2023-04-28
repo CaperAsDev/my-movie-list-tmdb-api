@@ -18,6 +18,7 @@ const searchEndPoint = "/search/movie";
 
 const catalog = document.querySelector(".catalog");
 const mainContentContainer = document.querySelector(".main-content-container");
+const spotlight = document.querySelector(".spotlight");
 const asideBarCategories = document.querySelector(".list--categories");
 const body = document.querySelector("body");
 body.addEventListener("click", (e) => {
@@ -80,7 +81,7 @@ export async function renderCategoryModal(categoryId) {
   const categoryObj = genreList.find((genre) => genre.id == categoryId);
   console.log(categoryObj);
   const categoryModal = createCategorySection(dataList, categoryObj.name);
-  body.append(categoryModal);
+  mainContentContainer.insertAdjacentElement("afterend",categoryModal);
 }
 export async function renderTrendsModal() {
   const dayTrendingList = await getData(dayTrendingEndPoint, "results")();
@@ -90,19 +91,17 @@ export async function renderTrendsModal() {
     weekTrendingList,
     "Trending"
   );
-  body.append(categoryModal);
+  mainContentContainer.insertAdjacentElement("afterend",categoryModal);
 }
 export async function renderSearchModal(searchedValue) {
   if (searchedValue.length > 0) {
     const searchList = await getSearchedMovie(searchedValue);
     if (searchList.length > 0) {
       const searchModal = createSearchModal(searchList, searchedValue);
-
-      body.append(searchModal);
+      mainContentContainer.insertAdjacentElement("afterend",searchModal);
     } else if (searchList.length == 0) {
       const emptySearchResult = createEmptySearchResults(searchedValue);
-
-      body.append(emptySearchResult);
+      mainContentContainer.insertAdjacentElement("afterend",emptySearchResult);
     }
 
     searchForm.value = " ";
@@ -140,7 +139,7 @@ export async function renderMovieDetailsModal(id) {
     trailers
   );
 
-  body.append(movieDetailModal);
+  mainContentContainer.insertAdjacentElement("afterend",movieDetailModal);
   console.log(similarMoviesFiltered);
   console.log(casting);
   console.log(movieObj);
@@ -183,10 +182,13 @@ async function getGenreList() {
 }
 async function getTrends() {
   const trendingList = await getData(dayTrendingEndPoint, "results")();
-  const spotlight = createSpotlight(trendingList[0]);
-  mainContentContainer.insertBefore(spotlight, catalog);
+  const {movie, panelContainer} = createSpotlight(trendingList[0]);
+  spotlight.classList.remove("spotlight-loading");
+  spotlight.innerHTML = "";
+  spotlight.append(movie, panelContainer);
   const trends = { name: "Trending", id: 0 };
   const trendingSection = createCatalogSection(trends, trendingList);
+  catalog.innerHTML = "";
   catalog.append(trendingSection);
 }
 function getDataByGenre(genreId, page = 1) {

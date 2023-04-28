@@ -10,7 +10,10 @@
       href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,500;1,300;1,700&family=Poppins:wght@300;400;600;700;900&display=swap"
       rel="stylesheet"
     />
-
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap-icons/font/bootstrap-icons.css"
+    />
     <link rel="stylesheet" href="./styles/app.css" />
     <title>My Movie List</title>
   </head>
@@ -57,7 +60,21 @@
       </div>
     </aside>
     <main class="main-content-container">
-      <div class="catalog"></div>
+      <section class="spotlight spotlight-loading">
+        <div class="spotlight-skeleton loading-section"></div>
+      </section>
+      <div class="catalog">
+        <div class="carousel-skeleton ">
+          <div class="carousel-skeleton__title loading-section"></div>
+          <div class="carousel-skeleton__movies">
+            <div class="square-squeleton loading-section"></div>
+            <div class="square-squeleton loading-section"></div>
+            <div class="square-squeleton loading-section"></div>
+            <div class="square-squeleton loading-section"></div>
+            <div class="square-squeleton loading-section"></div>
+          </div>
+        </div>
+      </div>
     </main>
     <section class="movie-detail-modal inactive modal">
       <div class="modal__panel-container modal-container">

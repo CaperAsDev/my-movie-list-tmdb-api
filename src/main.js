@@ -1,22 +1,31 @@
+import { renderHomePage } from "./navigation/homeRendering.mjs";
 import {
-  getMainInfo,
   renderCategoryModal,
   renderTrendsModal,
   renderSearchModal,
-  goHomePage,
   renderMovieDetailsModal,
-} from "./navigation.mjs";
+} from "./navigation/modalRendering.mjs";
+
 window.addEventListener("DOMContentLoaded", startPage, false);
 window.addEventListener("hashchange", navigator, false);
 
+const asideTrending = document.querySelector("#trendingAside");
+asideTrending.addEventListener("click", () => (location.hash = "trending"));
+
+const searchIcon = document.querySelector(".search__icon");
+searchIcon.addEventListener("click", searchHash);
+
+const searchForm = document.querySelector(".search__input");
+searchForm.addEventListener("keyup", (e) => {
+  e.key === "Enter" ? searchHash() : null;
+});
+
 function startPage() {
-  getMainInfo();
+  renderHomePage();
   navigator();
 }
-
 function navigator() {
-  console.log({ location });
-  goHomePage();
+  closeModals();
   const indexPage = pages.findIndex((page) =>
     location.hash.startsWith(page.hash)
   );
@@ -27,52 +36,56 @@ function navigator() {
     pages[0].go();
   }
 }
+function searchHash() {
+  const searchedValue = searchForm.value;
+  const arraySearch = searchedValue.trim().split(" ").join("_");
+  arraySearch.length > 0 ? (location.hash = `search=${arraySearch}`) : null;
+}
+function closeModals() {
+  const modals = document.querySelectorAll(".modal");
+  const nodesArray = Array.from(modals);
+  nodesArray.forEach((node) => node.remove());
+}
 
 const pages = [
   {
     hash: "#home",
     go: () => {
-      goHomePage();
-      console.log(`Estas en home`);
+      closeModals();
     },
   },
   {
     hash: "#trend",
     go: () => {
       renderTrendsModal();
-      console.log(`Estas en trend`);
     },
   },
   {
     hash: "#search=",
     go: () => {
-      const hash = location.hash;
-      const search = hash.split("=");
-      const searchValueArr = search[1].split("_")
+      const searchValueArr = splitHash().split("_");
       const searchValueString = searchValueArr.join(" ");
-      console.log(`Estas en search`);
       renderSearchModal(searchValueString);
     },
   },
   {
     hash: "#movie=",
     go: () => {
-      console.log(`Estas en movies`);
-      const hash = location.hash;
-      const hashArray = hash.split("=");
-      const id = hashArray[hashArray.length - 1];
+      const id = splitHash();
       renderMovieDetailsModal(id);
     },
   },
   {
     hash: "#category=",
     go: () => {
-      const hash = location.hash;
-      const hashArray = hash.split("=");
-      const id = hashArray[hashArray.length - 1];
-      console.log(id);
+      const id = splitHash();
       renderCategoryModal(id);
-      console.log(`Estas en categories`);
     },
   },
 ];
+function splitHash() {
+  const hash = location.hash;
+  const hashArray = hash.split("=");
+  const data = hashArray[1];
+  return data;
+}

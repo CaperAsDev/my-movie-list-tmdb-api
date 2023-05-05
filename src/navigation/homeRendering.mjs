@@ -3,6 +3,7 @@ import {
   getDataByGenre,
   getGenreList,
   endPoints,
+  getMoreAboutMovie,
 } from "../apiConnection.mjs";
 import {
   createCatalogSection,
@@ -25,8 +26,8 @@ const spotlight = document.querySelector(".spotlight");
 const body = document.querySelector("body");
 body.addEventListener("click", (e) => {
   if (e.target.nodeName.toLowerCase() === "img") {
-    console.log(e.target.attributes["movie-id"].value);
-    location.hash = `movie=${e.target.attributes["movie-id"].value}`;
+    const movieID = e.target.getAttribute("movie-id");
+    movieID ? (location.hash = `movie=${movieID}`) : null;
   }
 });
 
@@ -54,7 +55,9 @@ async function renderTrends() {
     endPoints.dayTrend,
     "results"
   )();
-  const { movie, panelContainer } = createSpotlight(trendingList[0]);
+  const spotlightMovie = trendingList[0];
+
+  const { movie, panelContainer } = createSpotlight(spotlightMovie);
   spotlight.classList.remove("spotlight-loading");
   spotlight.innerHTML = "";
   spotlight.append(movie, panelContainer);

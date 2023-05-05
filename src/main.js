@@ -5,6 +5,7 @@ import {
   renderSearchModal,
   renderMovieDetailsModal,
   renderUserSelectionModal,
+  renderTrailerModal,
 } from "./navigation/modalRendering.mjs";
 
 window.addEventListener("DOMContentLoaded", startPage, false);
@@ -93,6 +94,13 @@ const pages = [
     go: () => {
       const id = splitHash();
       renderCategoryModal(id);
+    },
+  },
+  {
+    hash: "#trailer=",
+    go: () => {
+      const id = splitHash();
+      renderTrailerModal(id);
     },
   },
 ];

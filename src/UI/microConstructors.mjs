@@ -88,13 +88,9 @@ export function createCarousel(list) {
           const img = entry.target.firstElementChild;
           const imgSrc =img.getAttribute("data-src");
           img.src = imgSrc;
-          // console.log(entry.target.firstElementChild);
           observer.unobserve(entry.target);
         }
       });
-      /* console.log(entries);
-      console.log(observ);
-      console.log("Callback"); */
     },
     { root: carousel }
   );

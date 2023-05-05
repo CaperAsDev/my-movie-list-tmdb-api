@@ -4,7 +4,6 @@ import {
   createCarousel,
   createIcon,
 } from "./microConstructors.mjs";
-
 export function createMovieDetailsModal(
   movieObj,
   similarMoviesArr,
@@ -25,6 +24,14 @@ export function createMovieDetailsModal(
   const { movie, img } = createMovieImg(movieObj, "w780");
   movie.classList.add("movie-image-container");
   img.classList.add("detail-movie-image");
+
+  if (trailers.length > 0) {
+    movie.classList.add("with-trailers");
+    movie.addEventListener("click", () => {
+      location.hash = `#trailer=${movieObj.id}`;
+    });
+  }
+
   const movieInfo = document.createElement("div");
   movieInfo.classList.add("movie-info");
 
@@ -56,12 +63,22 @@ export function createMovieDetailsModal(
   const addToWatchButton = document.createElement("button");
   addToWatchButton.classList.add("movie-interactions__button");
   addToWatchButton.setAttribute("data-id", movieObj.id);
-  dynamicButtonReaction(addToWatchButton, "Watch List", "bookmark-plus", "toWatch_movies");
+  dynamicButtonReaction(
+    addToWatchButton,
+    "Watch List",
+    "bookmark-plus",
+    "toWatch_movies"
+  );
 
   const addToFavButton = document.createElement("button");
   addToFavButton.classList.add("movie-interactions__button");
   addToFavButton.setAttribute("data-id", movieObj.id);
-  dynamicButtonReaction(addToFavButton, "Favorites", "suit-heart", "favorite_movies");
+  dynamicButtonReaction(
+    addToFavButton,
+    "Favorites",
+    "suit-heart",
+    "favorite_movies"
+  );
 
   if (casting.length > 4) {
     const actorsAside = document.createElement("aside");
@@ -94,6 +111,7 @@ export function createMovieDetailsModal(
   const divisor = document.createElement("div");
   divisor.classList.add("line", "line--long");
 
+  console.log(trailers);
   mainContent.append(movie, movieInfo);
   movieInfo.append(movieTitle, overview, movieData, movieInteractions);
   movieData.append(ulInfo, ulCategories);
@@ -180,10 +198,10 @@ function dynamicButtonReaction(button, section, iconName, dataName) {
     const dataList = getLocalStorage(dataName);
     const alreadyadded = dataList.some((movie) => movie == movieId);
     if (alreadyadded) {
-      manageFavorites(movieId, alreadyadded, dataList ,dataName);
+      manageFavorites(movieId, alreadyadded, dataList, dataName);
       button.append(icon, `Add to ${section}`);
     } else {
-      manageFavorites(movieId, alreadyadded, dataList ,dataName);
+      manageFavorites(movieId, alreadyadded, dataList, dataName);
       button.append(filledIcon, `Added to ${section}`);
     }
   });

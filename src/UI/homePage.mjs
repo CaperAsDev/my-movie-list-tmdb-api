@@ -109,6 +109,9 @@ export function createSpotlight(obj) {
     "spotlight__button--play"
   );
   spotlightBtnPlay.setAttribute("movie-id", obj.id);
+  spotlightBtnPlay.addEventListener("click", ()=>{
+    location.hash = `#trailer=${obj.id}`
+  })
 
   const buttonIconPlay = document.createElement("span");
   buttonIconPlay.classList.add("button__icon", "button__icon--play");
@@ -122,6 +125,10 @@ export function createSpotlight(obj) {
     "spotlight__button--info"
   );
   spotlightBtnInfo.setAttribute("movie-id", obj.id);
+  spotlightBtnInfo.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    location.hash = `#movie=${obj.id}`;
+  });
 
   const buttonIconInfo = document.createElement("span");
   buttonIconInfo.classList.add("button__icon", "button__icon--info");

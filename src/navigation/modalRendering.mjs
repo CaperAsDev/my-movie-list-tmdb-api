@@ -16,6 +16,7 @@ import { createTrendsModal } from "../UI/trendsModal.mjs";
 import { createCategorySection } from "../UI/categoryModal.mjs";
 import { createMovieDetailsModal } from "../UI/detailModal.mjs";
 import { createFavoriteModal } from "../UI/favoriteModal.mjs";
+import { createTrailerModal } from "../UI/movieTrailerModal.mjs";
 
 const mainContentContainer = document.querySelector(".main-content-container");
 
@@ -68,9 +69,9 @@ export async function renderSearchModal(searchedValue) {
 }
 export async function renderMovieDetailsModal(id) {
   const movieObj = await getMovie(id);
-  const movieVideos = await getMoreAboutMovie(id, "/videos");
   const similarMovies = await getMoreAboutMovie(id, "/similar");
   const casting = await getMoreAboutMovie(id, "/credits", "cast");
+  const movieVideos = await getMoreAboutMovie(id, "/videos");
   const trailers = movieVideos.filter((obj) => {
     return obj.type === "Trailer";
   });
@@ -111,6 +112,24 @@ export async function renderUserSelectionModal(ldName) {
 
   const userModal = createFavoriteModal(objList, title);
   mainContentContainer.insertAdjacentElement("afterend", userModal);
+}
+export async function renderTrailerModal(id) {
+  const movieVideos = await getMoreAboutMovie(id, "/videos");
+  const trailers = movieVideos.filter((obj) => {
+    return obj.type === "Trailer";
+  });
+  if (trailers.length > 0) {
+    const movieObj = await getMovie(id);
+    let trailerIndex = trailers.findIndex(
+      (obj) => obj.name === "Official Trailer"
+    );
+    let trailer;
+    trailerIndex !== -1
+      ? (trailer = trailers[trailerIndex])
+      : (trailer = trailers[0]);
+    const trailerModal = createTrailerModal(trailer, movieObj.title);
+    mainContentContainer.insertAdjacentElement("afterend", trailerModal);
+  }
 }
 function filterCastingList(list) {
   const actorWithImg = list.filter(

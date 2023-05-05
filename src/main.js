@@ -4,10 +4,16 @@ import {
   renderTrendsModal,
   renderSearchModal,
   renderMovieDetailsModal,
+  renderUserSelectionModal,
 } from "./navigation/modalRendering.mjs";
 
 window.addEventListener("DOMContentLoaded", startPage, false);
 window.addEventListener("hashchange", navigator, false);
+
+const favAnchor = document.querySelector(".fav-anchor");
+favAnchor.addEventListener("click",() => (location.hash = "#favorites"))
+const wathchAnchor = document.querySelector(".watch-anchor");
+wathchAnchor.addEventListener("click",() => (location.hash = "#toWatch"))
 
 const asideTrending = document.querySelector("#trendingAside");
 asideTrending.addEventListener("click", () => (location.hash = "trending"));
@@ -29,12 +35,7 @@ function navigator() {
   const indexPage = pages.findIndex((page) =>
     location.hash.startsWith(page.hash)
   );
-
-  if (indexPage !== -1) {
-    pages[indexPage].go();
-  } else {
-    pages[0].go();
-  }
+  indexPage !== -1 ? pages[indexPage].go() : pages[0].go();
 }
 function searchHash() {
   const searchedValue = searchForm.value;
@@ -58,6 +59,18 @@ const pages = [
     hash: "#trend",
     go: () => {
       renderTrendsModal();
+    },
+  },
+  {
+    hash: "#favorites",
+    go: () => {
+      renderUserSelectionModal("favorite_movies");
+    },
+  },
+  {
+    hash: "#toWatch",
+    go: () => {
+      renderUserSelectionModal("toWatch_movies");
     },
   },
   {

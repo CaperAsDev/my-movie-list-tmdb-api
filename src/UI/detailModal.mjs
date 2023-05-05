@@ -5,7 +5,6 @@ import {
   createIcon,
 } from "./microConstructors.mjs";
 
-//!Movie Details
 export function createMovieDetailsModal(
   movieObj,
   similarMoviesArr,
@@ -56,11 +55,13 @@ export function createMovieDetailsModal(
 
   const addToWatchButton = document.createElement("button");
   addToWatchButton.classList.add("movie-interactions__button");
-  dynamicButtonReaction(addToWatchButton, "Watch List", "bookmark-plus");
+  addToWatchButton.setAttribute("data-id", movieObj.id);
+  dynamicButtonReaction(addToWatchButton, "Watch List", "bookmark-plus", "toWatch_movies");
 
   const addToFavButton = document.createElement("button");
   addToFavButton.classList.add("movie-interactions__button");
-  dynamicButtonReaction(addToFavButton, "Favorites", "suit-heart");
+  addToFavButton.setAttribute("data-id", movieObj.id);
+  dynamicButtonReaction(addToFavButton, "Favorites", "suit-heart", "favorite_movies");
 
   if (casting.length > 4) {
     const actorsAside = document.createElement("aside");
@@ -160,21 +161,46 @@ function createUl(...li) {
   }
   return ul;
 }
-function dynamicButtonReaction(button, section, iconName) {
+function dynamicButtonReaction(button, section, iconName, dataName) {
   const icon = createIcon(`${iconName}`);
   const filledIcon = createIcon(`${iconName}-fill`);
 
-  button.append(icon, `Add to ${section}`);
-  button.title = `Add to ${section}`;
-  button.setAttribute("isAdded", false);
+  const movieId = button.getAttribute("data-id");
+  const dataList = getLocalStorage(dataName);
+  const alreadyadded = dataList.some((movie) => movie == movieId);
+
+  if (alreadyadded) {
+    button.append(filledIcon, `Added to ${section}`);
+  } else {
+    button.append(icon, `Add to ${section}`);
+  }
+
   button.addEventListener("click", () => {
     button.innerHTML = "";
-    if (button.isAdded) {
+    const dataList = getLocalStorage(dataName);
+    const alreadyadded = dataList.some((movie) => movie == movieId);
+    if (alreadyadded) {
+      manageFavorites(movieId, alreadyadded, dataList ,dataName);
       button.append(icon, `Add to ${section}`);
-      button.isAdded = false;
     } else {
+      manageFavorites(movieId, alreadyadded, dataList ,dataName);
       button.append(filledIcon, `Added to ${section}`);
-      button.isAdded = true;
     }
   });
+}
+export function getLocalStorage(dataName) {
+  let list = JSON.parse(localStorage.getItem(dataName));
+  list == null ? (list = []) : (list = list);
+  return list;
+}
+function manageFavorites(id, state, favorites, dataName) {
+  if (state) {
+    const newData = favorites.filter((elem) => {
+      return elem !== id;
+    });
+    localStorage.setItem(dataName, JSON.stringify(newData));
+  } else {
+    favorites.push(id);
+    localStorage.setItem(dataName, JSON.stringify(favorites));
+  }
 }

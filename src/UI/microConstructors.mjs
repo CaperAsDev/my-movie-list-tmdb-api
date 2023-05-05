@@ -1,9 +1,10 @@
 export function createNodeList(list) {
   const nodeList = [];
-  list.forEach((movieItem) => {
+  const filteredList = list.filter(obj=> obj.backdrop_path || obj.poster_path);
+  filteredList.forEach((movieItem) => {
     const { movie, img } = createMovieImg(movieItem, "w300");
-    movie.classList.add("category__item", "movie");
-    img.classList.add("category__img");
+    movie.classList.add("movie-item", "movie");
+    img.classList.add("movie-img");
     img.setAttribute("movie-id", movieItem.id);
     nodeList.push(movie);
   });
@@ -52,34 +53,58 @@ export function createModal() {
 }
 export function createMovieImg(
   { backdrop_path, title, name, poster_path },
-  imgSize
+  imgSize,
+  isLazy = false
 ) {
   const movie = document.createElement("div");
   movie.setAttribute("data-movie", title ? title : name);
   const img = document.createElement("img");
   const baseUrl = "https://image.tmdb.org/t/p/";
 
-  if (backdrop_path) {
-    img.src = `${baseUrl}${imgSize}${backdrop_path}`;
-  } else {
-    img.src = `${baseUrl}${imgSize}${poster_path}`;
-    // console.log(movieImg);
+  if (!isLazy) {
+    if (backdrop_path) {
+      img.src = `${baseUrl}${imgSize}${backdrop_path}`;
+    } else {
+      img.src = `${baseUrl}${imgSize}${poster_path}`;
+    }
+  } else{
+    if (backdrop_path) {
+      img.setAttribute("data-src", `${baseUrl}${imgSize}${backdrop_path}`);
+    } else {
+      img.setAttribute("data-src", `${baseUrl}${imgSize}${poster_path}`);
+    }
   }
   img.alt = title ? title : name;
-  img.classList.add("movie-img--with-title");
   movie.append(img);
   return { movie, img };
 }
 export function createCarousel(list) {
   const carousel = document.createElement("div");
   carousel.className = "carousel";
-
+  const observer = new IntersectionObserver(
+    (entries, observ) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target.firstElementChild;
+          const imgSrc =img.getAttribute("data-src");
+          img.src = imgSrc;
+          // console.log(entry.target.firstElementChild);
+          observer.unobserve(entry.target);
+        }
+      });
+      /* console.log(entries);
+      console.log(observ);
+      console.log("Callback"); */
+    },
+    { root: carousel }
+  );
   const tagsList = list.map((elem) => createCarouselItem(elem));
   carousel.append(...tagsList);
+  tagsList.forEach((tag) => observer.observe(tag));
   return carousel;
 }
 function createCarouselItem(obj) {
-  const { movie, img } = createMovieImg(obj, "w300");
+  const { movie, img } = createMovieImg(obj, "w300", true);
   movie.classList.add("carousel__item", "movie");
   img.setAttribute("movie-id", obj.id);
 

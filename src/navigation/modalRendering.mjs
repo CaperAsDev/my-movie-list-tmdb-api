@@ -5,30 +5,38 @@ import {
   getData,
   getDataByGenre,
   getGenreList,
-	endPoints
+  endPoints,
 } from "../apiConnection.mjs";
 import {
   createSearchModal,
   createEmptySearchResults,
 } from "../UI/searchModal.mjs";
+import { getLocalStorage } from "../UI/detailModal.mjs";
 import { createTrendsModal } from "../UI/trendsModal.mjs";
 import { createCategorySection } from "../UI/categoryModal.mjs";
 import { createMovieDetailsModal } from "../UI/detailModal.mjs";
+import { createFavoriteModal } from "../UI/favoriteModal.mjs";
 
 const mainContentContainer = document.querySelector(".main-content-container");
 
 export async function renderCategoryModal(categoryId) {
   const genreList = await getGenreList();
 
-  const dataList = await getDataByGenre(categoryId);
+  const { totalPages, dataList } = await getDataByGenre(categoryId);
   const categoryObj = genreList.find((genre) => genre.id == categoryId);
-  console.log(categoryObj);
-  const categoryModal = createCategorySection(dataList, categoryObj.name);
+  const categoryModal = createCategorySection(
+    dataList,
+    categoryObj,
+    getDataByGenre,
+    totalPages
+  );
   mainContentContainer.insertAdjacentElement("afterend", categoryModal);
 }
 export async function renderTrendsModal() {
-  const dayTrendingList = await getData(endPoints.dayTrend, "results")();
-  const weekTrendingList = await getData(endPoints.weekTrend, "results")();
+  const { totalPages: dayTrendPages, dataList: dayTrendingList } =
+    await getData(endPoints.dayTrend, "results")();
+  const { totalPages: weekTrendPages, dataList: weekTrendingList } =
+    await getData(endPoints.weekTrend, "results")();
   const categoryModal = createTrendsModal(
     dayTrendingList,
     weekTrendingList,
@@ -37,11 +45,18 @@ export async function renderTrendsModal() {
   mainContentContainer.insertAdjacentElement("afterend", categoryModal);
 }
 export async function renderSearchModal(searchedValue) {
-	const searchForm = document.querySelector(".search__input");
+  const searchForm = document.querySelector(".search__input");
   if (searchedValue.length > 0) {
-    const searchList = await getSearchedMovie(searchedValue);
+    const { totalPages, dataList: searchList } = await getSearchedMovie(
+      searchedValue
+    );
     if (searchList.length > 0) {
-      const searchModal = createSearchModal(searchList, searchedValue);
+      const searchModal = createSearchModal(
+        searchList,
+        searchedValue,
+        getSearchedMovie,
+        totalPages
+      );
       mainContentContainer.insertAdjacentElement("afterend", searchModal);
     } else if (searchList.length == 0) {
       const emptySearchResult = createEmptySearchResults(searchedValue);
@@ -80,6 +95,22 @@ export async function renderMovieDetailsModal(id) {
   mainContentContainer.insertAdjacentElement("afterend", movieDetailModal);
   console.log(movieObj);
   console.log(trailers);
+}
+export async function renderUserSelectionModal(ldName) {
+  const idList = getLocalStorage(ldName);
+  const objList = [];
+  for (const iterator of idList) {
+    const movieObj = await getMovie(iterator);
+    objList.push(movieObj);
+  }
+
+  let title;
+  ldName.includes("favorite")
+    ? (title = "Favorite Movies")
+    : (title = "To Watch Movies");
+
+  const userModal = createFavoriteModal(objList, title);
+  mainContentContainer.insertAdjacentElement("afterend", userModal);
 }
 function filterCastingList(list) {
   const actorWithImg = list.filter(

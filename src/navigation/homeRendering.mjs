@@ -1,10 +1,22 @@
-import { getData, getDataByGenre, getGenreList, endPoints } from "../apiConnection.mjs";
-
+import {
+  getData,
+  getDataByGenre,
+  getGenreList,
+  endPoints,
+} from "../apiConnection.mjs";
 import {
   createCatalogSection,
   createSpotlight,
   createListItem,
 } from "../UI/homePage.mjs";
+
+let observer = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    generador.next();
+    observer.unobserve(entries[0].target);
+  }
+});
+let generador;
 
 const catalog = document.querySelector(".catalog");
 
@@ -20,7 +32,6 @@ body.addEventListener("click", (e) => {
 
 let interval;
 
-//!Funciones para renderizar home
 export function renderHomePage() {
   setCategoriesAside();
   loadCatalog();
@@ -35,13 +46,14 @@ async function setCategoriesAside() {
 }
 async function loadCatalog() {
   renderTrends();
-  const generador = addToCatalog();
-  interval = setInterval(async () => {
-    await generador.next();
-  }, 1000);
+  generador = addToCatalog();
+  generador.next();
 }
 async function renderTrends() {
-  const trendingList = await getData(endPoints.dayTrend, "results")();
+  const { dataList: trendingList } = await getData(
+    endPoints.dayTrend,
+    "results"
+  )();
   const { movie, panelContainer } = createSpotlight(trendingList[0]);
   spotlight.classList.remove("spotlight-loading");
   spotlight.innerHTML = "";
@@ -55,10 +67,10 @@ async function* addToCatalog() {
   const genreList = await getGenreList();
 
   for (const genre of genreList) {
-    const dataList = await getDataByGenre(genre.id);
-    // console.log(dataList);
+    const { dataList } = await getDataByGenre(genre.id);
     const section = createCatalogSection(genre, dataList);
     catalog.append(section);
+    observer.observe(section);
     yield;
   }
   clearInterval(interval);

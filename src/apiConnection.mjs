@@ -17,9 +17,14 @@ export const endPoints = {
 export function getData(endpoint, dataName) {
   return async function (queries = ""){
     const { data } = await api(`${endpoint}?${queries}`);
-    // console.log(data);
+    console.log(data);
     const dataList = data[dataName];
-    return dataList;
+    if(data.total_pages > 1){
+      const totalPages = data.total_pages
+      return { totalPages, dataList}
+    }else{
+      return dataList
+    }
   }
 }
 export async function getMovie(id,){
@@ -37,8 +42,8 @@ export function getDataByGenre(genreId, page = 1) {
     "results"
   )(`&with_genres=${genreId}&include_video=true&page=${page}`);
 }
-export function getSearchedMovie(searchedvalue) {
-  return getData(endPoints.search, "results")(`query=${searchedvalue}`);
+export function getSearchedMovie(searchedvalue, page = 1) {
+  return getData(endPoints.search, "results")(`query=${searchedvalue}&page=${page}`);
 }
 export function getGenreList() {
   return getData(endPoints.genreList, "genres")();

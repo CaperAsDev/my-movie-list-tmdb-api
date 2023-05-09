@@ -450,7 +450,7 @@ body {
 }
 .modal-title {
   text-align: center;
-  font-size: 30px;
+  font-size: 2rem;
   font-weight: normal;
   color: var(--contrast-color);
 }
@@ -507,8 +507,8 @@ body {
 .trends-title {
   position: sticky;
   top: 0px;
-  padding: 11px 15px;
-  font-size: 24px;
+  padding-left: 15px;
+  font-size: 2rem;
   color: var(--main-text-color);
   background: var(--dark-font-color);
   z-index: 2;

@@ -21,7 +21,7 @@ import { createTrailerModal } from "../UI/movieTrailerModal.mjs";
 const mainContentContainer = document.querySelector(".main-content-container");
 
 export async function renderCategoryModal(categoryId) {
-  const genreList = await getGenreList();
+  const {dataList: genreList} = await getGenreList();
 
   const { totalPages, dataList } = await getDataByGenre(categoryId);
   const categoryObj = genreList.find((genre) => genre.id == categoryId);

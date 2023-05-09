@@ -39,7 +39,7 @@ export function renderHomePage() {
 }
 async function setCategoriesAside() {
   const asideBarCategories = document.querySelector(".list--categories");
-  const genreList = await getGenreList();
+  const {dataList: genreList} = await getGenreList();
   genreList.map((genre) => {
     const liNode = createListItem(genre);
     asideBarCategories.append(liNode);
@@ -67,7 +67,7 @@ async function renderTrends() {
   catalog.append(trendingSection);
 }
 async function* addToCatalog() {
-  const genreList = await getGenreList();
+  const {dataList: genreList} = await getGenreList();
 
   for (const genre of genreList) {
     const { dataList } = await getDataByGenre(genre.id);

@@ -23,7 +23,7 @@ export function getData(endpoint, dataName) {
       const totalPages = data.total_pages
       return { totalPages, dataList}
     }else{
-      return dataList
+      return {dataList}
     }
   }
 }

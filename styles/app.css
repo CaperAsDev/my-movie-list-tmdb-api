@@ -106,7 +106,6 @@ body {
   position: fixed;
   top: 50px;
   display: flex;
-  justify-content: space-between;
   height: max-content;
   width: 215px;
   transform: translateX(-200px);
@@ -119,7 +118,8 @@ body {
   opacity: 1;
 }
 .navbar {
-  height: 80vh;
+  width: 200px;
+  max-height: 80vh;
   overflow: auto;
   scrollbar-color: var(--contrast-color) transparent;
   scrollbar-width: thin;

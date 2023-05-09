@@ -1,6 +1,8 @@
 export function createNodeList(list) {
   const nodeList = [];
-  const filteredList = list.filter(obj=> obj.backdrop_path || obj.poster_path);
+  const filteredList = list.filter(
+    (obj) => obj.backdrop_path || obj.poster_path
+  );
   filteredList.forEach((movieItem) => {
     const { movie, img } = createMovieImg(movieItem, "w300");
     movie.classList.add("movie-item", "movie");
@@ -67,7 +69,7 @@ export function createMovieImg(
     } else {
       img.src = `${baseUrl}${imgSize}${poster_path}`;
     }
-  } else{
+  } else {
     if (backdrop_path) {
       img.setAttribute("data-src", `${baseUrl}${imgSize}${backdrop_path}`);
     } else {
@@ -86,7 +88,7 @@ export function createCarousel(list) {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const img = entry.target.firstElementChild;
-          const imgSrc =img.getAttribute("data-src");
+          const imgSrc = img.getAttribute("data-src");
           img.src = imgSrc;
           observer.unobserve(entry.target);
         }
@@ -96,6 +98,15 @@ export function createCarousel(list) {
   );
   const tagsList = list.map((elem) => createCarouselItem(elem));
   carousel.append(...tagsList);
+
+  carousel.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    let scrollLeft = carousel.scrollLeft;
+    let scrollSize = e.deltaY * 1.5;
+    let newPosition = scrollLeft + scrollSize;
+    carousel.scrollTo(newPosition, 0);
+  });
+
   tagsList.forEach((tag) => observer.observe(tag));
   return carousel;
 }

@@ -81,8 +81,8 @@ function arrowScroll(container, operacion) {
     let newPosition = scrollLeft - clientWidth;
     container.scrollTo(newPosition, 0);
     console.log("corriendo a la izq");
-    scrollLeft -= clientWidth;
-  }
+/*     scrollLeft -= clientWidth;
+ */  }
 }
 export function createSpotlight(obj) {
   const { movie, img } = createMovieImg(obj, "original");

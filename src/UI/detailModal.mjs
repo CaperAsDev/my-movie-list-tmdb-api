@@ -3,6 +3,7 @@ import {
   createMovieImg,
   createCarousel,
   createIcon,
+  scrollWithWheel,
 } from "./microConstructors.mjs";
 export function createMovieDetailsModal(
   movieObj,
@@ -85,6 +86,7 @@ export function createMovieDetailsModal(
     actorsAside.classList.add("actors-aside");
     const actorsContainer = document.createElement("div");
     actorsContainer.classList.add("actors-container");
+    scrollWithWheel(actorsContainer, 0.5);
     const asideTab = document.createElement("div");
     asideTab.classList.add("aside-tab");
     const tabIcon = document.createElement("div");

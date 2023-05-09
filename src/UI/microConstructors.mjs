@@ -99,13 +99,7 @@ export function createCarousel(list) {
   const tagsList = list.map((elem) => createCarouselItem(elem));
   carousel.append(...tagsList);
 
-  carousel.addEventListener("wheel", (e) => {
-    e.preventDefault();
-    let scrollLeft = carousel.scrollLeft;
-    let scrollSize = e.deltaY * 1.5;
-    let newPosition = scrollLeft + scrollSize;
-    carousel.scrollTo(newPosition, 0);
-  });
+  scrollWithWheel(carousel, 1.5);
 
   tagsList.forEach((tag) => observer.observe(tag));
   return carousel;
@@ -122,4 +116,13 @@ export function createIcon(name) {
   const iconTag = document.createElement("i");
   iconTag.classList.add("bi", `bi-${name}`);
   return iconTag;
+}
+export function scrollWithWheel(container,hundredsOfScrollPixels = 1) {
+  container.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    let scrollLeft = container.scrollLeft;
+    let scrollSize = e.deltaY * hundredsOfScrollPixels;
+    let newPosition = scrollLeft + scrollSize;
+    container.scrollTo(newPosition, 0);
+  });
 }

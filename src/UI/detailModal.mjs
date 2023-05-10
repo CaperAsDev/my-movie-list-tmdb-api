@@ -4,6 +4,7 @@ import {
   createCarousel,
   createIcon,
   scrollWithWheel,
+  arrowScroll,
 } from "./microConstructors.mjs";
 export function createMovieDetailsModal(
   movieObj,
@@ -89,8 +90,8 @@ export function createMovieDetailsModal(
     scrollWithWheel(actorsContainer, 0.5);
     const asideTab = document.createElement("div");
     asideTab.classList.add("aside-tab");
-    const tabIcon = document.createElement("div");
-    tabIcon.classList.add("tab__icon", "tab__icon--vertical");
+    const tabIcon = createIcon("caret-right-fill");
+    tabIcon.classList.add("tab-icon");
 
     const actorCardsNodes = [];
     casting.forEach((actor) => {
@@ -107,8 +108,22 @@ export function createMovieDetailsModal(
   const similarProductionsTitle = document.createElement("h4");
   similarProductionsTitle.textContent = "Similar Productions";
   similarProductionsTitle.classList.add("similar-productions__title");
+  const similarProductionsCarouselContainer = document.createElement("div");
+  similarProductionsCarouselContainer.classList.add(
+    "detail-carousel-container"
+  );
+  const arrowLeft = createIcon("caret-left-fill");
+  arrowLeft.classList.add("detail-arrow-icon");
+  const arrowRight = createIcon("caret-right-fill");
+  arrowRight.classList.add("detail-arrow-icon");
   const similarProductionsCarousel = createCarousel(similarMoviesArr);
   similarProductionsCarousel.classList.add("detail-carousel");
+  arrowLeft.addEventListener("click", () =>
+    arrowScroll(similarProductionsCarousel, "-")
+  );
+  arrowRight.addEventListener("click", () =>
+    arrowScroll(similarProductionsCarousel, "+")
+  );
 
   const divisor = document.createElement("div");
   divisor.classList.add("line", "line--long");
@@ -118,9 +133,14 @@ export function createMovieDetailsModal(
   movieInfo.append(movieTitle, overview, movieData, movieInteractions);
   movieData.append(ulInfo, ulCategories);
   movieInteractions.append(addToFavButton, addToWatchButton);
+  similarProductionsCarouselContainer.append(
+    arrowLeft,
+    similarProductionsCarousel,
+    arrowRight
+  );
   similarProductions.append(
     similarProductionsTitle,
-    similarProductionsCarousel
+    similarProductionsCarouselContainer
   );
 
   return modal;

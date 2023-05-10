@@ -126,3 +126,18 @@ export function scrollWithWheel(container,hundredsOfScrollPixels = 1) {
     container.scrollTo(newPosition, 0);
   });
 }
+export function arrowScroll(container, operacion) {
+  let scrollLeft = container.scrollLeft;
+  let clientWidth = container.clientWidth;
+
+  if (operacion == "+") {
+    let newPosition = scrollLeft + clientWidth;
+    container.scrollTo(newPosition, 0);
+    console.log("corriendo a la der");
+  } else {
+    let newPosition = scrollLeft - clientWidth;
+    container.scrollTo(newPosition, 0);
+    console.log("corriendo a la izq");
+/*     scrollLeft -= clientWidth;
+ */  }
+}

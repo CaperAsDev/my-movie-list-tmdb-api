@@ -1,4 +1,4 @@
-import { createCarousel, createMovieImg } from "./microConstructors.mjs";
+import { createCarousel, createMovieImg, createIcon, arrowScroll } from "./microConstructors.mjs";
 
 export function createCatalogSection(category, arrObjs) {
   const section = document.createElement("section");
@@ -6,11 +6,11 @@ export function createCatalogSection(category, arrObjs) {
   section.classList.add("catalog__item", categoryName);
   const { catHeader, headerProgress } = createCategoryHeader(category);
   const carousel = createCarousel(arrObjs);
-  const nextIcon = document.createElement("span");
+  const nextIcon = createIcon("caret-right-fill");
   nextIcon.addEventListener("click", () => {
     arrowScroll(carousel, "+");
   });
-  const beforeIcon = document.createElement("span");
+  const beforeIcon = createIcon("caret-left-fill");
   beforeIcon.addEventListener("click", () => {
     arrowScroll(carousel, "-");
   });
@@ -69,21 +69,7 @@ function scrollHandler(container, progressBar) {
     progressBar.style.width = `${scrollPercent}%`;
   });
 }
-function arrowScroll(container, operacion) {
-  let scrollLeft = container.scrollLeft;
-  let clientWidth = container.clientWidth;
 
-  if (operacion == "+") {
-    let newPosition = scrollLeft + clientWidth;
-    container.scrollTo(newPosition, 0);
-    console.log("corriendo a la der");
-  } else {
-    let newPosition = scrollLeft - clientWidth;
-    container.scrollTo(newPosition, 0);
-    console.log("corriendo a la izq");
-/*     scrollLeft -= clientWidth;
- */  }
-}
 export function createSpotlight(obj) {
   const { movie, img } = createMovieImg(obj, "original");
   movie.classList.add("image-container");
@@ -96,8 +82,8 @@ export function createSpotlight(obj) {
   const panelTag = document.createElement("div");
   panelTag.classList.add("panel__tag");
 
-  const tabIcon = document.createElement("div");
-  tabIcon.classList.add("tab__icon");
+  const tabIcon = createIcon("caret-up-fill");
+  tabIcon.classList.add("tab__icon--spotlight", "tab-icon");
   panelTag.appendChild(tabIcon);
 
   const spotlightPanel = document.createElement("div");
@@ -113,8 +99,8 @@ export function createSpotlight(obj) {
     location.hash = `#trailer=${obj.id}`
   })
 
-  const buttonIconPlay = document.createElement("span");
-  buttonIconPlay.classList.add("button__icon", "button__icon--play");
+  const buttonIconPlay = createIcon("play-btn-fill")
+  buttonIconPlay.classList.add("button__icon");
 
   const playTextNode = document.createTextNode("Watch Trailer");
   spotlightBtnPlay.append(buttonIconPlay, playTextNode);
@@ -130,8 +116,8 @@ export function createSpotlight(obj) {
     location.hash = `#movie=${obj.id}`;
   });
 
-  const buttonIconInfo = document.createElement("span");
-  buttonIconInfo.classList.add("button__icon", "button__icon--info");
+  const buttonIconInfo = createIcon("info-square");
+  buttonIconInfo.classList.add("button__icon");
   const infoTextNode = document.createTextNode("More Info");
   spotlightBtnInfo.append(buttonIconInfo, infoTextNode);
   spotlightPanel.append(spotlightBtnPlay, spotlightBtnInfo);

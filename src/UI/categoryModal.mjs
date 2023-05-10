@@ -15,9 +15,15 @@ export function createCategorySection(list, { name, id }, getDataFunction, total
 
   let newPageLoading = false;
   const mainContentContainer = mainContent.parentNode;
-  mainContentContainer.addEventListener("scroll", async () => {
-    const { scrollTop, clientHeight, scrollTopMax } = mainContentContainer;
+  console.log(mainContentContainer);
+  mainContentContainer.addEventListener("scroll", async (e) => {
+    const scrollTop = mainContentContainer.scrollTop;
+    const scrollHight = mainContentContainer.scrollHeight;
+    const clientHeight = mainContentContainer.clientHeight;
+    const scrollTopMax = scrollHight - clientHeight;
+
     const isCloseToBottom = scrollTop + (clientHeight / 2) >= scrollTopMax;
+
     if (isCloseToBottom && !newPageLoading && page < totalPages) {
       newPageLoading = true;
       page++;

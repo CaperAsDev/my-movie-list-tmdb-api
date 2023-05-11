@@ -6,11 +6,16 @@ import {
   renderMovieDetailsModal,
   renderUserSelectionModal,
   renderTrailerModal,
+  renderErrorModal
 } from "./navigation/modalRendering.mjs";
 
 window.addEventListener("DOMContentLoaded", startPage, false);
 window.addEventListener("hashchange", navigator, false);
 
+const homeTitle = document.querySelector('.header__title')
+homeTitle.addEventListener("click", ()=>{
+  location.hash = "#home"
+})
 const favAnchor = document.querySelector(".fav-anchor");
 favAnchor.addEventListener("click",() => (location.hash = "#favorites"))
 const wathchAnchor = document.querySelector(".watch-anchor");
@@ -101,6 +106,12 @@ const pages = [
     go: () => {
       const id = splitHash();
       renderTrailerModal(id);
+    },
+  },
+  {
+    hash: "#error",
+    go: () => {
+      renderErrorModal();
     },
   },
 ];

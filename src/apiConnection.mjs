@@ -28,8 +28,12 @@ export function getData(endpoint, dataName) {
   }
 }
 export async function getMovie(id,){
-  const {data} = await api(`/movie/${id}`);
-  return data;
+  try{
+    const {data} = await api(`/movie/${id}`);
+    return data;
+  }catch(error){
+    location.hash = "#error"
+  }
 }
 export async function getMoreAboutMovie(id,detail, dataName = "results"){
   const {data} = await api(`/movie/${id}${detail}`);

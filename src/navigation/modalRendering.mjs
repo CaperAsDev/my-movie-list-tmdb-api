@@ -17,6 +17,7 @@ import { createCategorySection } from "../UI/categoryModal.mjs";
 import { createMovieDetailsModal } from "../UI/detailModal.mjs";
 import { createFavoriteModal } from "../UI/favoriteModal.mjs";
 import { createTrailerModal } from "../UI/movieTrailerModal.mjs";
+import { createErrorModal } from "../UI/errorModal.mjs";
 
 const mainContentContainer = document.querySelector(".main-content-container");
 
@@ -130,6 +131,10 @@ export async function renderTrailerModal(id) {
     const trailerModal = createTrailerModal(trailer, movieObj.title);
     mainContentContainer.insertAdjacentElement("afterend", trailerModal);
   }
+}
+export async function renderErrorModal (error){
+  const errorModal = createErrorModal();
+  mainContentContainer.insertAdjacentElement("afterend", errorModal);
 }
 function filterCastingList(list) {
   const actorWithImg = list.filter(

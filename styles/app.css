@@ -730,6 +730,22 @@ body {
   background: var(--translucid-background-light-high);
   color: var(--dark-font-color);
 }
+.error-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.error-title{
+  color: red;
+}
+.error-container+.modal__close-icon{
+  background: red;
+}
+.error-image{
+  height: 100%;
+  width: 50%;
+  object-fit: cover;
+}
 /* !Estilos loading */
 .inactive {
   display: none;

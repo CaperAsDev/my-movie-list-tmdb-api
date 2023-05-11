@@ -1,3 +1,5 @@
+const dispositivo = navigator;
+console.log(dispositivo);
 export function createNodeList(list) {
   const nodeList = [];
   const filteredList = list.filter(
@@ -117,13 +119,18 @@ export function createIcon(name) {
   iconTag.classList.add("bi", `bi-${name}`);
   return iconTag;
 }
-export function scrollWithWheel(container,hundredsOfScrollPixels = 1) {
+export function scrollWithWheel(container, hundredsOfScrollPixels = 1) {
   container.addEventListener("wheel", (e) => {
-    e.preventDefault();
     let scrollLeft = container.scrollLeft;
-    let scrollSize = e.deltaY * hundredsOfScrollPixels;
-    let newPosition = scrollLeft + scrollSize;
-    container.scrollTo(newPosition, 0);
+    let scrollSize ;
+    if(e.deltaY > 70) {
+      e.preventDefault();
+      scrollSize = e.deltaY * hundredsOfScrollPixels
+      let newPosition = scrollLeft + scrollSize;
+      container.scrollTo(newPosition, 0);
+    }else{
+      return;
+    }
   });
 }
 export function arrowScroll(container, operacion) {
@@ -138,6 +145,7 @@ export function arrowScroll(container, operacion) {
     let newPosition = scrollLeft - clientWidth;
     container.scrollTo(newPosition, 0);
     console.log("corriendo a la izq");
-/*     scrollLeft -= clientWidth;
- */  }
+    /*     scrollLeft -= clientWidth;
+     */
+  }
 }
